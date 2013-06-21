@@ -174,7 +174,7 @@
 
       <!-- Sample Data -->
       <Component Id="Sample1344">
-        <File Id="Sample1344.PmuCapture" Name="Sample1344.PmuCapture" Source="$(var.openPDC.ProjectDir)\Sample1344.PmuCapture" />
+        <File Id="Sample1344.PmuCapture" Name="Sample1344.PmuCapture" Source="$(var.SIEGate.ProjectDir)\Sample1344.PmuCapture" />
       </Component>
 
       <!-- Registry Settings -->
