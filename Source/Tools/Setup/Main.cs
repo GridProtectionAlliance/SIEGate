@@ -313,7 +313,7 @@ namespace Setup
         {
             try
             {
-                Process[] instances = Process.GetProcessesByName("TsfManager");
+                Process[] instances = Process.GetProcessesByName("SIEGateManager");
 
                 if (instances.Length > 0)
                 {
