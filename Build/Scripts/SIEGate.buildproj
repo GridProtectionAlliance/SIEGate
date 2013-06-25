@@ -33,8 +33,8 @@
     <PropertyGroup>
       <!-- Must-override setting(s). -->
       <ProjectName>SIEGate</ProjectName>
-      <!-- Server folder is different for VS2012 -->
-      <ServerFolder>$/$(ProjectName)/Main-VS2012</ServerFolder>
+      <!-- Server folder is different for 'Feature Development' -->
+      <ServerFolder>$/$(ProjectName)/Feature Development</ServerFolder>
       <!-- Use Visual Studio 11.0 tools -->
       <TfsClient Condition="'$(TfsClient)' == ''">$(VS110COMNTOOLS)\..\IDE\tf.exe</TfsClient>
       <VisualStudio Condition="'$(VisualStudio)' == ''">$(VS110COMNTOOLS)\..\IDE\devenv.com</VisualStudio>
@@ -46,7 +46,7 @@
     <PropertyGroup>
       <!-- Project specific settings. -->
       <ProjectSolution>$(LocalFolder)\Source\$(ProjectName).sln</ProjectSolution>
-      <BuildDeployFolder Condition="'$(BuildDeployFolder)' == ''">\\GPAWEB\NightlyBuilds\SIEGate\Beta-VS2012\</BuildDeployFolder>
+      <BuildDeployFolder Condition="'$(BuildDeployFolder)' == ''">\\GPAWEB\NightlyBuilds\SIEGate\Feature Development\Beta\</BuildDeployFolder>
     </PropertyGroup>
   </Target>
 
