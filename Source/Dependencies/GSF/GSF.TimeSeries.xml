@@ -6737,6 +6737,11 @@
             Default value for <see cref="P:GSF.TimeSeries.Transport.DataPublisher.AllowSynchronizedSubscription"/>.
             </summary>
         </member>
+        <member name="F:GSF.TimeSeries.Transport.DataPublisher.DefaultAllowMetadataRefresh">
+            <summary>
+            Default value for <see cref="P:GSF.TimeSeries.Transport.DataPublisher.AllowMetadataRefresh"/>.
+            </summary>
+        </member>
         <member name="F:GSF.TimeSeries.Transport.DataPublisher.DefaultUseBaseTimeOffsets">
             <summary>
             Default value for <see cref="P:GSF.TimeSeries.Transport.DataPublisher.UseBaseTimeOffsets"/>.
@@ -7032,6 +7037,11 @@
             </summary>
         </member>
         <member name="P:GSF.TimeSeries.Transport.DataPublisher.AllowSynchronizedSubscription">
+            <summary>
+            Gets or sets flag that indicates if this publisher will allow synchronized subscriptions when requested by subscribers.
+            </summary>
+        </member>
+        <member name="P:GSF.TimeSeries.Transport.DataPublisher.AllowMetadataRefresh">
             <summary>
             Gets or sets flag that indicates if this publisher will allow synchronized subscriptions when requested by subscribers.
             </summary>
