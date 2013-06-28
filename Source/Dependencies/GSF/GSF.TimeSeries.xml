@@ -4757,9 +4757,21 @@
             </summary>
             <param name="description">Assigns the description for this adapter command.</param>
         </member>
+        <member name="M:GSF.TimeSeries.Adapters.AdapterCommandAttribute.#ctor(System.String,System.String[])">
+            <summary>
+            Creates a new <see cref="T:GSF.TimeSeries.Adapters.AdapterCommandAttribute"/> with the specified <paramref name="description"/> value.
+            </summary>
+            <param name="description">Assigns the description for this adapter command.</param>
+            <param name="allowedRoles">Assigns the roles which are allowed to invoke this adapter command.</param>
+        </member>
         <member name="P:GSF.TimeSeries.Adapters.AdapterCommandAttribute.Description">
             <summary>
             Gets the description of this adapter command.
+            </summary>
+        </member>
+        <member name="P:GSF.TimeSeries.Adapters.AdapterCommandAttribute.AllowedRoles">
+            <summary>
+            Gets the roles which are allowed to invoke this adapter command.
             </summary>
         </member>
         <member name="T:GSF.TimeSeries.Adapters.AllAdaptersCollection">
@@ -6837,6 +6849,14 @@
             Gets subscriber information for specified client connection.
             </summary>
             <param name="clientIndex">Enumerated index for client connection.</param>
+        </member>
+        <member name="M:GSF.TimeSeries.Transport.DataPublisher.ImportCertificate(System.String,System.Byte[])">
+            <summary>
+            Imports a certificate to the trusted certificates path.
+            </summary>
+            <param name="fileName">The file name to give to the certificate when imported.</param>
+            <param name="certificateData">The data to be written to the certificate file.</param>
+            <returns>The local path on the server where the file was written.</returns>
         </member>
         <member name="M:GSF.TimeSeries.Transport.DataPublisher.GetSubscriberStatus(System.Guid)">
             <summary>
