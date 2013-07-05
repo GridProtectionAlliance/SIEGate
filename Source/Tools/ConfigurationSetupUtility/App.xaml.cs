@@ -24,11 +24,15 @@
 //******************************************************************************************************
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
+using System.Threading;
 using System.Windows;
+using System.Xml;
 using GSF.ErrorManagement;
 using GSF.IO;
+using GSF.Identity;
 using GSF.Security.Cryptography;
 
 namespace ConfigurationSetupUtility
@@ -77,6 +81,51 @@ namespace ConfigurationSetupUtility
 
             // When run from the installer the current directory may not be the directory where this application is running
             Directory.SetCurrentDirectory(FilePath.GetAbsolutePath(""));
+
+            // Attempt to create an event log source for the SIEGate Manager for authentication logging. This needs to be done
+            // here since the CSU runs with administrative privileges and the SIEGate Manager normally does not; also there is
+            // a short system delay that exists before you can write to a new event log source after it is first created.
+            try
+            {
+                // Attempt to load the application defined for the SIEGate Manager in its configuration file
+                string configFileName = FilePath.GetAbsolutePath(ManagerConfig);
+
+                if (File.Exists(configFileName))
+                {
+                    XmlDocument configFile = new XmlDocument();
+                    configFile.Load(configFileName);
+
+                    XmlNode securitySettings = configFile.SelectSingleNode("configuration/categorizedSettings/securityProvider");
+
+                    if ((object)securitySettings != null)
+                    {
+                        string applicationName = null;
+
+                        foreach (XmlNode child in securitySettings.ChildNodes)
+                        {
+                            if ((object)child.Attributes != null && (object)child.Attributes["name"] != null)
+                            {
+                                if (child.Attributes["name"].Value == "ApplicationName")
+                                {
+                                    applicationName = child.Attributes["value"].Value;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(applicationName))
+                            applicationName = Manager;
+
+                        // Create the event log source based on defined application name for SIEGate Manager if it does not already exist
+                        if (!EventLog.SourceExists(applicationName))
+                            EventLog.CreateEventSource(applicationName, "Application");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                m_errorLogger.Log(new InvalidOperationException(string.Format("Warning: failed to create or validate the event log source for the openPDC Manager: {0}", ex.Message), ex), false);
+            }
         }
 
         #endregion
