@@ -194,7 +194,7 @@ namespace ConfigurationSetupUtility.Screens
             defaultIndex = (defaultSelection == null) ? 0 : m_nodeList.IndexOf(defaultSelection);
 
             if (m_nodeList.Count > 0)
-                m_infoTextBlock.Text = "Please select the node you would like the openPDC to use.";
+                m_infoTextBlock.Text = "Please select the node you would like the SIEGate to use.";
             else
             {
                 // Inform the user that the node list could not be found.
@@ -488,7 +488,7 @@ namespace ConfigurationSetupUtility.Screens
                 UpdateDataGrid();
         }
 
-        // Occurs when the user selects a different node to be used by the openPDC.
+        // Occurs when the user selects a different node to be used by the SIEGate.
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             object selectedItem = m_dataGrid.SelectedItem;
