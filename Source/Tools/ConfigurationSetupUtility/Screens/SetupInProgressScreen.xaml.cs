@@ -742,7 +742,7 @@ namespace ConfigurationSetupUtility.Screens
         {
             try
             {
-                const string GroupName = "openPDC Admins";
+                const string GroupName = "SIEGate Admins";
                 DirectorySecurity destinationSecurity;
                 string loginName;
 
