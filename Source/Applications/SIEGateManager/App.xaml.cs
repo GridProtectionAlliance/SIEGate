@@ -24,6 +24,7 @@
 using System;
 using System.Security.Principal;
 using System.Windows;
+using GSF.Configuration;
 using GSF.TimeSeries;
 using GSF.TimeSeries.UI;
 using GSF.Data;
@@ -54,6 +55,8 @@ namespace SIEGateManager
         /// </summary>
         public App()
         {
+            bool mirrorMode = true;
+
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
 
             m_errorLogger = new ErrorLogger();
@@ -89,7 +92,21 @@ namespace SIEGateManager
                     database.Dispose();
             }
 
-            IsolatedStorageManager.WriteToIsolatedStorage("MirrorMode", true);
+            try
+            {
+                CategorizedSettingsElementCollection systemSettings = ConfigurationFile.Current.Settings["systemSettings"];
+                CategorizedSettingsElement mirrorModeSetting = systemSettings["MirrorMode"];
+
+                if ((object)mirrorModeSetting != null)
+                    mirrorMode = mirrorModeSetting.ValueAsBoolean();
+            }
+            catch (Exception ex)
+            {
+                // Log and display error, but continue on - if manager fails to load MirrorMode from the config file, it can just fall back on the default
+                m_errorLogger.Log(new InvalidOperationException(string.Format("{0} cannot connect to database: {1}", m_title, ex.Message), ex));
+            }
+
+            IsolatedStorageManager.WriteToIsolatedStorage("MirrorMode", mirrorMode);
         }
 
         #endregion
