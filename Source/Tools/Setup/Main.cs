@@ -103,7 +103,7 @@ namespace Setup
                         else
                         {
                             net40Install = new Process();
-                            net40Install.StartInfo.FileName = "http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&displaylang=en";
+                            net40Install.StartInfo.FileName = "http://www.microsoft.com/en-us/download/details.aspx?id=30653";
                             net40Install.StartInfo.UseShellExecute = true;
                             net40Install.Start();
                         }
