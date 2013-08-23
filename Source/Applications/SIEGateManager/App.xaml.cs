@@ -28,7 +28,7 @@ using GSF.Configuration;
 using GSF.TimeSeries;
 using GSF.TimeSeries.UI;
 using GSF.Data;
-using GSF.ErrorManagement;
+using GSF.Windows.ErrorManagement;
 using GSF.Reflection;
 
 namespace SIEGateManager
