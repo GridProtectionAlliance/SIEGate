@@ -27,13 +27,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows;
-using System.Xml;
-using GSF.ErrorManagement;
 using GSF.IO;
-using GSF.Identity;
 using GSF.Security.Cryptography;
+using GSF.Windows.ErrorManagement;
 
 namespace ConfigurationSetupUtility
 {
