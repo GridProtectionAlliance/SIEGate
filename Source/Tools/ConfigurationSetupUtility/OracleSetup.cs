@@ -337,7 +337,7 @@ namespace ConfigurationSetupUtility
                             statement = statement.Remove(statement.Length - 1);
 
                             // Fix name of tablespace for index
-                            statement = statement.Replace("OPG_INDEX", indexTablespaceName);
+                            statement = statement.Replace("SIEGate_INDEX", indexTablespaceName);
 
                             // Remove comments and execute the statement.
                             command.CommandText = statement;

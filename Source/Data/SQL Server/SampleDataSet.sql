@@ -7,28 +7,79 @@ GO
 INSERT INTO Node(Name, CompanyID, Description, Settings, MenuType, MenuData, Master, LoadOrder, Enabled) 
 	VALUES('Default', NULL, 'Default node', 'RemoteStatusServerConnectionString={server=localhost:8505;integratedSecurity=true};datapublisherport=6170;AlarmServiceUrl=http://localhost:5019/alarmservices', 
 			'File', 'Menu.xml', 1, 0, 1)
+GO
+
 UPDATE Node SET ID='d1ebffbb-d318-463f-9822-394fd0e968b0' WHERE Name='Default'
+GO
+
 INSERT INTO Historian(NodeID, Acronym, Name, AssemblyName, TypeName, ConnectionString, IsLocal, Description, LoadOrder, Enabled) VALUES('d1ebffbb-d318-463f-9822-394fd0e968b0', 'DEVARCHIVE', 'Local Development Archive', 'TestingAdapters.dll', 'TestingAdapters.VirtualOutputAdapter', '', 1, 'Local development archive', 0, 1)
+GO
+
 INSERT INTO Device(NodeID, Acronym, Name, IsConcentrator, CompanyID, HistorianID, AccessID, VendorDeviceID, ProtocolID, Longitude, Latitude, InterconnectionID, ConnectionString, MeasuredLines, LoadOrder, Enabled) VALUES('d1ebffbb-d318-463f-9822-394fd0e968b0', 'TESTDEVICE', 'Test Device', 0, 30, 1, 2, 2, 3, -89.8038, 35.3871, 1, 'transportProtocol=File; file=Sample1344.PmuCapture; useHighResolutionInputTimer=True', 3, 0, 1)
+GO
+
 INSERT INTO Phasor(DeviceID, Label, Type, Phase, SourceIndex) VALUES(1, '500 kV Bus 1', 'V', '+', 1)
+GO
+
 INSERT INTO Phasor(DeviceID, Label, Type, Phase, SourceIndex) VALUES(1, '500 kV Bus 2', 'V', '+', 2)
+GO
+
 INSERT INTO Phasor(DeviceID, Label, Type, Phase, SourceIndex) VALUES(1, 'Cordova', 'I', '+', 3)
+GO
+
 INSERT INTO Phasor(DeviceID, Label, Type, Phase, SourceIndex) VALUES(1, 'Dell', 'I', '+', 4)
+GO
+
 INSERT INTO Phasor(DeviceID, Label, Type, Phase, SourceIndex) VALUES(1, 'Lagoon Creek', 'I', '+', 5)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE:ABBS', 8, NULL, 'TESTDEVICE-SF', 'Test Device ABB-521 Status Flags', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE:ABBF', 5, NULL, 'TESTDEVICE-FQ', 'Test Device ABB-521 Frequency', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE:ABBD1', 9, NULL, 'TESTDEVICE-DV1', 'Test Device ABB-521 Digital Value 1', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE:ABBDF', 6, NULL, 'TESTDEVICE-DF', 'Test Device ABB-521 Frequency Delta (dF/dt)', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-BUS1:ABBV', 3, 1, 'TESTDEVICE-PM1', 'Test Device ABB-521 500 kV Bus 1 Positive Sequence Voltage Magnitude', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-BUS1:ABBVH', 4, 1, 'TESTDEVICE-PA1', 'Test Device ABB-521 500 kV Bus 1 Positive Sequence Voltage Phase Angle', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-BUS2:ABBV', 3, 2, 'TESTDEVICE-PM2', 'Test Device ABB-521 500 kV Bus 2 Positive Sequence Voltage Magnitude', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-BUS2:ABBVH', 4, 2, 'TESTDEVICE-PA2', 'Test Device ABB-521 500 kV Bus 2 Positive Sequence Voltage Phase Angle', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-CORD:ABBI', 1, 3, 'TESTDEVICE-PM3', 'Test Device ABB-521 Cordova Positive Sequence Current Magnitude', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-CORD:ABBIH', 2, 3, 'TESTDEVICE-PA3', 'Test Device ABB-521 Cordova Positive Sequence Current Phase Angle', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-DELL:ABBI', 1, 4, 'TESTDEVICE-PM4', 'Test Device ABB-521 Dell Positive Sequence Current Magnitude', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-DELL:ABBIH', 2, 4, 'TESTDEVICE-PA4', 'Test Device ABB-521 Dell Positive Sequence Current Phase Angle', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-LAGO:ABBI', 1, 5, 'TESTDEVICE-PM5', 'Test Device ABB-521 Lagoon Creek Positive Sequence Current Magnitude', 1)
+GO
+
 INSERT INTO Measurement(HistorianID, DeviceID, PointTag, SignalTypeID, PhasorSourceIndex, SignalReference, Description, Enabled) VALUES(1, 1, 'TVA_TESTDEVICE-LAGO:ABBIH', 2, 5, 'TESTDEVICE-PA5', 'Test Device ABB-521 Lagoon Creek Positive Sequence Current Phase Angle', 1)
+GO
+
 INSERT INTO ApplicationRole (Name, Description, NodeID) VALUES ('Administrator', 'Administrator Role', 'd1ebffbb-d318-463f-9822-394fd0e968b0')
+GO
+
 INSERT INTO ApplicationRole (Name, Description, NodeID) VALUES ('Editor', 'Editor', 'd1ebffbb-d318-463f-9822-394fd0e968b0')
+GO
+
 INSERT INTO ApplicationRole (Name, Description, NodeID) VALUES ('Viewer', 'Viewer Role', 'd1ebffbb-d318-463f-9822-394fd0e968b0')
+GO

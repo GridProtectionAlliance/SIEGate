@@ -491,10 +491,7 @@ namespace ConfigurationSetupUtility.Screens
                 {
                     SqlServerSetup sqlServerSetup = m_state["sqlServerSetup"] as SqlServerSetup;
                     connectionString = sqlServerSetup.ConnectionString;
-
-                    object dataProviderStringValue;
-                    if (m_state.TryGetValue("sqlServerDataProviderString", out dataProviderStringValue))
-                        dataProviderString = dataProviderStringValue.ToString();
+                    dataProviderString = sqlServerSetup.DataProviderString;
 
                     if (string.IsNullOrWhiteSpace(dataProviderString))
                         dataProviderString = "AssemblyName={System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089}; ConnectionType=System.Data.SqlClient.SqlConnection; AdapterType=System.Data.SqlClient.SqlDataAdapter";
@@ -503,14 +500,10 @@ namespace ConfigurationSetupUtility.Screens
                 {
                     MySqlSetup mySqlSetup = m_state["mySqlSetup"] as MySqlSetup;
                     connectionString = mySqlSetup.ConnectionString;
-
-                    object dataProviderStringValue;
-                    // Get user customized data provider string
-                    if (m_state.TryGetValue("mySqlDataProviderString", out dataProviderStringValue))
-                        dataProviderString = dataProviderStringValue.ToString();
+                    dataProviderString = mySqlSetup.DataProviderString;
 
                     if (string.IsNullOrWhiteSpace(dataProviderString))
-                        dataProviderString = "AssemblyName={MySql.Data, Version=6.3.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d}; ConnectionType=MySql.Data.MySqlClient.MySqlConnection; AdapterType=MySql.Data.MySqlClient.MySqlDataAdapter";
+                        dataProviderString = "AssemblyName={MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d}; ConnectionType=MySql.Data.MySqlClient.MySqlConnection; AdapterType=MySql.Data.MySqlClient.MySqlDataAdapter";
                 }
                 else if (databaseType == "oracle")
                 {

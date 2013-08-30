@@ -241,20 +241,14 @@ namespace ConfigurationSetupUtility.Screens
             {
                 bool existing = Convert.ToBoolean(m_state["existing"]);
                 bool migrate = existing && Convert.ToBoolean(m_state["updateConfiguration"]);
-                string adminUserName, adminPassword;
                 object dataProviderStringValue;
                 string dataProviderString = null;
 
                 mySqlSetup = m_state["mySqlSetup"] as MySqlSetup;
-                mySqlSetup.OutputDataReceived += MySqlSetup_OutputDataReceived;
-                mySqlSetup.ErrorDataReceived += MySqlSetup_ErrorDataReceived;
                 m_state["newOleDbConnectionString"] = mySqlSetup.OleDbConnectionString;
-                adminUserName = mySqlSetup.UserName;
-                adminPassword = mySqlSetup.Password;
 
                 // Get user customized data provider string
-                if (m_state.TryGetValue("mySqlDataProviderString", out dataProviderStringValue))
-                    dataProviderString = dataProviderStringValue.ToString();
+                dataProviderString = mySqlSetup.DataProviderString;
 
                 if (string.IsNullOrWhiteSpace(dataProviderString))
                     dataProviderString = "AssemblyName={MySql.Data, Version=6.3.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d}; ConnectionType=MySql.Data.MySqlClient.MySqlConnection; AdapterType=MySql.Data.MySqlClient.MySqlDataAdapter";
@@ -286,13 +280,7 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             string scriptPath = Directory.GetCurrentDirectory() + "\\Database scripts\\MySQL\\" + scriptName;
                             AppendStatusMessage(string.Format("Attempting to run {0} script...", scriptName));
-
-                            if (!mySqlSetup.ExecuteScript(scriptPath))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
+                            mySqlSetup.ExecuteScript(scriptPath);
                             progress += 90 / scriptNames.Count;
                             UpdateProgressBar(progress);
                             AppendStatusMessage(string.Format("{0} ran successfully.", scriptName));
@@ -310,13 +298,7 @@ namespace ConfigurationSetupUtility.Screens
                             string pass = m_state["newMySqlUserPassword"].ToString();
                             AppendStatusMessage(string.Format("Attempting to create new user {0}...", user));
 
-                            if (!mySqlSetup.ExecuteStatement(string.Format("GRANT SELECT, UPDATE, INSERT, DELETE ON {0}.* TO {1} IDENTIFIED BY '{2}'", mySqlSetup.DatabaseName, user, pass)))
-                            {
-                                // If we couldn't grant the necessary permissions to
-                                // the database user, then the setup should fail.
-                                OnSetupFailed();
-                                return;
-                            }
+                            mySqlSetup.ExecuteStatement(string.Format("GRANT SELECT, UPDATE, INSERT, DELETE ON {0}.* TO {1} IDENTIFIED BY '{2}'", mySqlSetup.DatabaseName, user, pass));
 
                             mySqlSetup.UserName = user;
                             mySqlSetup.Password = pass;
@@ -359,14 +341,6 @@ namespace ConfigurationSetupUtility.Screens
                 AppendStatusMessage(ex.Message);
                 OnSetupFailed();
             }
-            finally
-            {
-                if (mySqlSetup != null)
-                {
-                    mySqlSetup.OutputDataReceived -= MySqlSetup_OutputDataReceived;
-                    mySqlSetup.ErrorDataReceived -= MySqlSetup_ErrorDataReceived;
-                }
-            }
         }
 
         // Called when the user has asked to set up a SQL Server database.
@@ -378,29 +352,17 @@ namespace ConfigurationSetupUtility.Screens
             {
                 bool existing = Convert.ToBoolean(m_state["existing"]);
                 bool migrate = existing && Convert.ToBoolean(m_state["updateConfiguration"]);
-                string adminUserName, adminPassword;
-                object dataProviderStringValue;
                 string dataProviderString = null;
                 bool createNewUser = false;
-                bool useIntegratedSecurity = false;
 
                 sqlServerSetup = m_state["sqlServerSetup"] as SqlServerSetup;
-                sqlServerSetup.OutputDataReceived += SqlServerSetup_OutputDataReceived;
-                sqlServerSetup.ErrorDataReceived += SqlServerSetup_ErrorDataReceived;
                 m_state["newOleDbConnectionString"] = sqlServerSetup.OleDbConnectionString;
-                adminUserName = sqlServerSetup.UserName;
-                adminPassword = sqlServerSetup.Password;
 
                 // Get user customized data provider string
-                if (m_state.TryGetValue("sqlServerDataProviderString", out dataProviderStringValue))
-                    dataProviderString = dataProviderStringValue.ToString();
+                dataProviderString = sqlServerSetup.DataProviderString;
 
                 if (string.IsNullOrWhiteSpace(dataProviderString))
                     dataProviderString = "AssemblyName={System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089}; ConnectionType=System.Data.SqlClient.SqlConnection; AdapterType=System.Data.SqlClient.SqlDataAdapter";
-
-                // Check to see if user requested to use integrated authentication
-                if (m_state.ContainsKey("useSqlServerIntegratedSecurity"))
-                    useIntegratedSecurity = Convert.ToBoolean(m_state["useSqlServerIntegratedSecurity"]);
 
                 if (!existing || migrate)
                 {
@@ -430,13 +392,7 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             string scriptPath = Directory.GetCurrentDirectory() + "\\Database scripts\\SQL Server\\" + scriptName;
                             AppendStatusMessage(string.Format("Attempting to run {0} script...", scriptName));
-
-                            if (!sqlServerSetup.ExecuteScript(scriptPath))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
+                            sqlServerSetup.ExecuteScript(scriptPath);
                             progress += 90 / scriptNames.Count;
                             UpdateProgressBar(progress);
                             AppendStatusMessage(string.Format("{0} ran successfully.", scriptName));
@@ -457,42 +413,14 @@ namespace ConfigurationSetupUtility.Screens
                             string db = sqlServerSetup.DatabaseName;
 
                             sqlServerSetup.DatabaseName = "master";
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] WITH PASSWORD=N'{1}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF", user, pass)))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
+                            sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] WITH PASSWORD=N'{1}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF", user, pass));
 
                             sqlServerSetup.DatabaseName = db;
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("CREATE USER [{0}] FOR LOGIN [{0}]", user)))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
-                            if (!sqlServerSetup.ExecuteStatement("CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]"))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", user)))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'")))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
-
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'")))
-                            {
-                                OnSetupFailed();
-                                return;
-                            }
+                            sqlServerSetup.ExecuteStatement(string.Format("CREATE USER [{0}] FOR LOGIN [{0}]", user));
+                            sqlServerSetup.ExecuteStatement("CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]");
+                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", user));
+                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'"));
+                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'"));
 
                             sqlServerSetup.UserName = user;
                             sqlServerSetup.Password = pass;
@@ -501,59 +429,31 @@ namespace ConfigurationSetupUtility.Screens
                             AppendStatusMessage("New database user created successfully.");
                             AppendStatusMessage(string.Empty);
                         }
-                        else if (useIntegratedSecurity)
+                        else if ((object)sqlServerSetup.IntegratedSecurity != null)
                         {
-                            const string groupName = "SIEGate Admins";
+                            const string GroupName = "SIEGate Admins";
 
                             string host = sqlServerSetup.HostName.Split('\\')[0].Trim();
                             string db = sqlServerSetup.DatabaseName;
                             string loginName;
                             bool useGroupLogin;
 
-                            useGroupLogin = UserInfo.LocalGroupExists(groupName) && (host == "." || Transport.IsLocalAddress(host));
-                            loginName = useGroupLogin ? string.Format(@"{0}\{1}", Environment.MachineName, groupName) : GetServiceAccountName();
+                            useGroupLogin = UserInfo.LocalGroupExists(GroupName) && (host == "." || Transport.IsLocalAddress(host));
+                            loginName = useGroupLogin ? string.Format(@"{0}\{1}", Environment.MachineName, GroupName) : GetServiceAccountName();
 
                             if ((object)loginName != null && !loginName.Equals("Local System", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 AppendStatusMessage(string.Format("Attempting to add Windows authenticated database login for {0}...", loginName));
 
                                 sqlServerSetup.DatabaseName = "master";
-                                if (!sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] FROM WINDOWS WITH DEFAULT_DATABASE=[master]", loginName)))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
+                                sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] FROM WINDOWS WITH DEFAULT_DATABASE=[master]", loginName));
 
                                 sqlServerSetup.DatabaseName = db;
-                                if (!sqlServerSetup.ExecuteStatement(string.Format("CREATE USER [{0}] FOR LOGIN [{0}]", loginName)))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
-
-                                if (!sqlServerSetup.ExecuteStatement("CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]"))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
-
-                                if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", loginName)))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
-
-                                if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'")))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
-
-                                if (!sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'")))
-                                {
-                                    OnSetupFailed();
-                                    return;
-                                }
+                                sqlServerSetup.ExecuteStatement(string.Format("CREATE USER [{0}] FOR LOGIN [{0}]", loginName));
+                                sqlServerSetup.ExecuteStatement("CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]");
+                                sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", loginName));
+                                sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'"));
+                                sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'"));
 
                                 UpdateProgressBar(98);
                                 AppendStatusMessage("Database login created successfully.");
@@ -584,13 +484,7 @@ namespace ConfigurationSetupUtility.Screens
                 }
 
                 // Modify the SIEGate configuration file.
-                string connectionString;
-
-                if (useIntegratedSecurity && !createNewUser)
-                    connectionString = sqlServerSetup.IntegratedSecurityConnectionString;
-                else
-                    connectionString = sqlServerSetup.PooledConnectionString;
-
+                string connectionString = sqlServerSetup.PooledConnectionString;
                 ModifyConfigFiles(connectionString, dataProviderString, Convert.ToBoolean(m_state["encryptSqlServerConnectionStrings"]));
                 SaveOldConnectionString();
 
@@ -600,14 +494,6 @@ namespace ConfigurationSetupUtility.Screens
             {
                 AppendStatusMessage(ex.Message);
                 OnSetupFailed();
-            }
-            finally
-            {
-                if (sqlServerSetup != null)
-                {
-                    sqlServerSetup.OutputDataReceived -= SqlServerSetup_OutputDataReceived;
-                    sqlServerSetup.ErrorDataReceived -= SqlServerSetup_ErrorDataReceived;
-                }
             }
         }
 
@@ -620,13 +506,10 @@ namespace ConfigurationSetupUtility.Screens
             {
                 bool existing = Convert.ToBoolean(m_state["existing"]);
                 bool migrate = existing && Convert.ToBoolean(m_state["updateConfiguration"]);
-                string adminUserName, adminPassword;
-                string dataProviderString = null;
+                string dataProviderString;
 
                 oracleSetup = m_state["oracleSetup"] as OracleSetup;
                 m_state["newOleDbConnectionString"] = oracleSetup.OleDbConnectionString;
-                adminUserName = oracleSetup.AdminUserName;
-                adminPassword = oracleSetup.AdminPassword;
 
                 // Get user customized data provider string
                 dataProviderString = oracleSetup.DataProviderString;
@@ -869,11 +752,6 @@ namespace ConfigurationSetupUtility.Screens
                 try
                 {
                     connection = (IDbConnection)Activator.CreateInstance(connectionType);
-
-                    //if (m_state["databaseType"].ToString() == "sql server")
-                    //    connection.ConnectionString = connectionString + ";pooling=false;"; // this was done to avoid connection pooling so SQL database can be deleted easily.
-                    //else
-                    //    connection.ConnectionString = connectionString;
                     connection.ConnectionString = connectionString;
                     connection.Open();
 
@@ -918,10 +796,16 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             SqlServerSetup sqlServerSetup = m_state["sqlServerSetup"] as SqlServerSetup;
                             sqlServerSetup.DatabaseName = "master";
-                            if (!sqlServerSetup.ExecuteStatement(string.Format("USE [master] ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE DROP DATABASE {0}", databaseName)))
-                                MessageBox.Show(string.Format("Failed to delete database {0}", databaseName), "Delete Database Failed");
-                            else
+
+                            try
+                            {
+                                sqlServerSetup.ExecuteStatement(string.Format("USE [master] ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE DROP DATABASE {0}", databaseName));
                                 AppendStatusMessage(string.Format("Dropped database {0} successfully.", databaseName));
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(string.Format("Failed to delete database {0} due to exception: {1}", databaseName, ex.Message), "Delete Database Failed");
+                            }
 
                             sqlServerSetup.DatabaseName = databaseName;
                         }
@@ -943,11 +827,16 @@ namespace ConfigurationSetupUtility.Screens
                         }
                         else
                         {
-                            MySqlSetup mySqlSetup = m_state["mySqlSetup"] as MySqlSetup;
-                            if (!mySqlSetup.ExecuteStatement(string.Format("DROP DATABASE {0}", databaseName)))
-                                MessageBox.Show(string.Format("Failed to delete database {0}", databaseName), "Delete Database Failed");
-                            else
+                            try
+                            {
+                                MySqlSetup mySqlSetup = m_state["mySqlSetup"] as MySqlSetup;
+                                mySqlSetup.ExecuteStatement(string.Format("DROP DATABASE {0}", databaseName));
                                 AppendStatusMessage(string.Format("Dropped database {0} successfully.", databaseName));
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(string.Format("Failed to delete database {0} due to exception: {1}", databaseName, ex.Message), "Delete Database Failed");
+                            }
                         }
                         return false;
                     }
@@ -1755,30 +1644,6 @@ namespace ConfigurationSetupUtility.Screens
                     m_state["oldOleDbDataType"] = "SqlServer";
                 }
             }
-        }
-
-        // Called when mysql.exe receives data on its standard output stream.
-        private void MySqlSetup_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        {
-            AppendStatusMessage(e.Data);
-        }
-
-        // Called when mysql.exe receives data on its standard error stream.
-        private void MySqlSetup_ErrorDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        {
-            AppendStatusMessage(e.Data);
-        }
-
-        // Called when sqlcmd.exe receives data on its standard output stream.
-        private void SqlServerSetup_OutputDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        {
-            AppendStatusMessage(e.Data);
-        }
-
-        // Called when sqlcmd.exe receives data on its standard error stream.
-        private void SqlServerSetup_ErrorDataReceived(object sender, System.Diagnostics.DataReceivedEventArgs e)
-        {
-            AppendStatusMessage(e.Data);
         }
 
         // Updates the progress bar to have the specified value.
