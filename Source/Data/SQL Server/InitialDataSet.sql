@@ -1,6 +1,3 @@
--- Script auto-generated generated from Access database SIEGate.mdb method GenerateInitialDataScript
--- 11/5/2010 4:57:08 PM
-
 USE SIEGate
 GO
 
@@ -670,7 +667,7 @@ GO
 INSERT INTO VendorDevice(VendorID, Name, Description, URL) VALUES(5, 'GE N60', 'GE N60 Synchrophasor Measurement System', 'http://www.geindustrial.com/cwc/products?pnlid=6&famid=31&catid=234&id=n60&lang=en_US')
 GO
 
-INSERT INTO VendorDevice(VendorID, Name, Description, URL) VALUES(12, 'openPDC', 'TVA Open Source Phasor Data Concentrator', 'http://www.openpdc.com/')
+INSERT INTO VendorDevice(VendorID, Name, Description, URL) VALUES(12, 'openPDC', 'Open Source Phasor Data Concentrator', 'http://www.openpdc.com/')
 GO
 
 INSERT INTO VendorDevice(VendorID, Name, Description, URL) VALUES(13, 'FNET', 'UTK FNET Device', '')
@@ -684,4 +681,3 @@ GO
 
 INSERT INTO VendorDevice(VendorID, Name, Description, URL) VALUES(15, 'ePDC', 'ePDC & eSPDC', 'http://www.electricpowergroup.com/solutions/epdc/index.html')
 GO
-

@@ -18,6 +18,11 @@
 --  ----------------------------------------------------------------------------------------------------
 --  05/07/2011 - J. Ritchie Carroll
 --       Generated original version of schema.
+--  03/27/2012 - prasanthgs
+--       Added ExceptionLog table for keeping recent exceptions.
+--  04/12/2012 - prasanthgs
+--       Reworked as per the comments of codeplex reviewers.
+--       Added new field Type to ErrorLog table. Removed ExceptionLog table.
 --  ----------------------------------------------------------------------------------------------------
 
 CREATE DATABASE SIEGate CHARACTER SET = UTF8;
@@ -32,7 +37,7 @@ USE SIEGate;
 CREATE TABLE ErrorLog(
     ID INT AUTO_INCREMENT NOT NULL,
     Source VARCHAR(200) NOT NULL,
-	Type VARCHAR(200) NULL,
+    Type VARCHAR(200) NULL,
     Message TEXT NOT NULL,
     Detail TEXT NULL,
     CreatedOn DATETIME NOT NULL DEFAULT N'0000-00-00 00:00:00',
@@ -188,7 +193,7 @@ CREATE TABLE Device(
     UniqueID NCHAR(36) NULL,
     Acronym VARCHAR(200) NOT NULL,
     Name VARCHAR(200) NULL,
-	OriginalSource VARCHAR(200) NULL,
+    OriginalSource VARCHAR(200) NULL,
     IsConcentrator TINYINT NOT NULL DEFAULT 0,
     CompanyID INT NULL,
     HistorianID INT NULL,
@@ -637,10 +642,10 @@ CREATE TABLE Subscriber (
     SharedSecret VARCHAR(200) NULL,
     AuthKey TEXT NULL,
     ValidIPAddresses TEXT NULL,
-	RemoteCertificateFile VARCHAR(500) NULL,
-	ValidPolicyErrors VARCHAR(200) NULL,
-	ValidChainFlags VARCHAR(500) NULL,
-	AccessControlFilter TEXT NULL,
+    RemoteCertificateFile VARCHAR(500) NULL,
+    ValidPolicyErrors VARCHAR(200) NULL,
+    ValidChainFlags VARCHAR(500) NULL,
+    AccessControlFilter TEXT NULL,
     Enabled TINYINT NOT NULL DEFAULT 0,
     CreatedOn DATETIME NOT NULL DEFAULT N'0000-00-00 00:00:00',
     CreatedBy VARCHAR(200) NOT NULL DEFAULT N'',
@@ -679,7 +684,7 @@ CREATE TABLE MeasurementGroup (
     ID INT AUTO_INCREMENT NOT NULL,
     Name VARCHAR(200) NOT NULL,
     Description TEXT NULL,
-	AccessControlFilter TEXT NULL,
+    FilterExpression TEXT NULL,
     CreatedOn DATETIME NOT NULL DEFAULT N'0000-00-00 00:00:00',
     CreatedBy VARCHAR(200) NOT NULL DEFAULT N'',
     UpdatedOn DATETIME NOT NULL DEFAULT N'0000-00-00 00:00:00',
@@ -982,7 +987,7 @@ FROM Company RIGHT OUTER JOIN
     Historian ON Measurement.HistorianID = Historian.ID LEFT OUTER JOIN
     Runtime ON Device.ID = Runtime.SourceID AND Runtime.SourceTable = N'Device' LEFT OUTER JOIN
     Runtime AS RuntimeP ON RuntimeP.SourceID = Device.ParentID AND RuntimeP.SourceTable = N'Device'
-	CROSS JOIN Node
+    CROSS JOIN Node
 WHERE (Device.Enabled <> 0 OR Device.Enabled IS NULL) AND (Measurement.Enabled <> 0)
 UNION ALL
 SELECT NodeID, SourceNodeID, CONCAT_WS(':', Source, CAST(PointID AS CHAR)) AS ID, SignalID, PointTag,
@@ -1357,3 +1362,82 @@ SET NEW.CreatedOn = UTC_TIMESTAMP();
 
 CREATE TRIGGER AuditLog_InsertDefault BEFORE INSERT ON AuditLog FOR EACH ROW
 SET NEW.UpdatedOn = UTC_TIMESTAMP();	
+
+--CREATE FUNCTION StringToGuid(str CHAR(36)) RETURNS BINARY(16)
+--RETURN CONCAT(UNHEX(LEFT(str, 8)), UNHEX(MID(str, 10, 4)), UNHEX(MID(str, 15, 4)), UNHEX(MID(str, 20, 4)), UNHEX(RIGHT(str, 12)));
+
+--CREATE FUNCTION GuidToString(guid BINARY(16)) RETURNS CHAR(36) 
+--RETURN CONCAT(HEX(LEFT(guid, 4)), '-', HEX(MID(guid, 5, 2)), '-', HEX(MID(guid, 7, 2)), '-', HEX(MID(guid, 9, 2)), '-', HEX(RIGHT(guid, 6)));
+
+--CREATE FUNCTION NewGuid() RETURNS BINARY(16) 
+--RETURN StringToGuid(UUID());
+
+--DELIMITER $$
+--CREATE PROCEDURE GetFormattedMeasurements(measurementSql TEXT, includeAdjustments TINYINT, OUT measurements TEXT)
+--BEGIN
+--    DECLARE done INT DEFAULT 0;
+--    DECLARE measurementID INT;
+--    DECLARE archiveSource VARCHAR(50);
+--    DECLARE adder FLOAT DEFAULT 0.0;
+--    DECLARE multiplier FLOAT DEFAULT 1.1;	
+--    DECLARE selectedMeasurements CURSOR FOR SELECT * FROM temp;
+--    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+--    CREATE TEMPORARY TABLE temp
+--    (
+--        MeasurementID INT,
+--        ArchiveSource VARCHAR(50),
+--        Adder FLOAT,
+--        Multiplier FLOAT
+--    )
+--    TABLESPACE MEMORY;
+    
+--    SET @insertSQL = CONCAT('INSERT INTO temp ', measurementSql);
+--    PREPARE stmt FROM @insertSQL;
+--    EXECUTE stmt;
+--    DEALLOCATE PREPARE stmt;
+
+--    OPEN selectedMeasurements;	
+--    SET measurements = '';
+    
+--    -- Step through selected measurements
+--    REPEAT
+--        -- Get next row from measurements SQL
+--        FETCH selectedMeasurements INTO measurementID, archiveSource, adder, multiplier;
+
+--        IF NOT done THEN
+--            IF LENGTH(measurements) > 0 THEN
+--                SET measurements = CONCAT(measurements, ';');
+--            END IF;
+            
+--            IF includeAdjustments <> 0 AND (adder <> 0.0 OR multiplier <> 1.0) THEN
+--                SET measurements = CONCAT(measurements, archiveSource, ':', measurementID, ',', adder, ',', multiplier);
+--            ELSE
+--                SET measurements = CONCAT(measurements, archiveSource, ':', measurementID);
+--            END IF;
+
+--        END IF;
+--    UNTIL done END REPEAT;
+
+--    CLOSE selectedMeasurements;
+--    DROP TABLE temp;
+--END$$
+--DELIMITER ;
+
+--DELIMITER $$
+--CREATE FUNCTION FormatMeasurements(measurementSql TEXT, includeAdjustments TINYINT)
+--RETURNS TEXT 
+--BEGIN
+--  DECLARE measurements TEXT; 
+
+--    CALL GetFormattedMeasurements(measurementSql, includeAdjustments, measurements);
+
+--    IF LENGTH(measurements) > 0 THEN
+--        SET measurements = CONCAT('{', measurements, '}');
+--    ELSE
+--        SET measurements = NULL;
+--    END IF;
+        
+--    RETURN measurements;
+--END$$
+--DELIMITER ;

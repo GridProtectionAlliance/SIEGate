@@ -20,12 +20,17 @@
 --       Generated original version of schema.
 --  07/15/2011 - Stephen C. Wills
 --       Translated MySQL script to SQLite.
+--  03/27/2012 - prasanthgs
+--       Added ExceptionLog table for keeping recent exceptions.
+--  04/12/2012 - prasanthgs
+--       Reworked as per the comments of codeplex reviewers.
+--       Added new field Type to ErrorLog table. Removed ExceptionLog table.
 --  ----------------------------------------------------------------------------------------------------
 
 CREATE TABLE ErrorLog(
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Source VARCHAR(200) NOT NULL,
-	Type VARCHAR(200) NULL,
+    Type VARCHAR(200) NULL,
     Message TEXT NOT NULL,
     Detail TEXT NULL,
     CreatedOn DATETIME NOT NULL DEFAULT ''
@@ -545,8 +550,8 @@ CREATE TABLE Alarm(
     UpdatedOn DATETIME NOT NULL DEFAULT '',
     UpdatedBy VARCHAR(200) NOT NULL DEFAULT '',
     CONSTRAINT FK_Alarm_Node FOREIGN KEY(NodeID) REFERENCES node (ID) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT FK_Alarm_Measurement_SignalID FOREIGN KEY(SignalID) REFERENCES Measurement (SignalID) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT FK_Alarm_Measurement_AssociatedMeasurementID FOREIGN KEY(AssociatedMeasurementID) REFERENCES Measurement (SignalID),
+    CONSTRAINT FK_Alarm_Measurement_SignalID FOREIGN KEY(SignalID) REFERENCES Measurement (SignalID) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Alarm_Measurement_AssociatedMeasurementID FOREIGN KEY(AssociatedMeasurementID) REFERENCES Measurement (SignalID),
     CONSTRAINT IX_Alarm_TagName UNIQUE (TagName ASC)
 );
 
@@ -649,10 +654,10 @@ CREATE TABLE Subscriber (
     SharedSecret VARCHAR(200) NULL,
     AuthKey TEXT NULL,
     ValidIPAddresses TEXT NULL,
-	RemoteCertificateFile VARCHAR(500) NULL,
-	ValidPolicyErrors VARCHAR(200) NULL,
-	ValidChainFlags VARCHAR(500) NULL,
-	AccessControlFilter TEXT NULL,
+    RemoteCertificateFile VARCHAR(500) NULL,
+    ValidPolicyErrors VARCHAR(200) NULL,
+    ValidChainFlags VARCHAR(500) NULL,
+    AccessControlFilter TEXT NULL,
     Enabled BOOLEAN NOT NULL DEFAULT 0,
     CreatedOn DATETIME NOT NULL DEFAULT '',
     CreatedBy VARCHAR(200) NOT NULL DEFAULT '',
@@ -698,7 +703,7 @@ CREATE TABLE MeasurementGroup (
     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Name VARCHAR(200) NOT NULL,
     Description TEXT NULL,
-	FilterExpression TEXT NULL,
+    AccessControlFilter TEXT NULL,
     CreatedOn DATETIME NOT NULL DEFAULT '',
     CreatedBy VARCHAR(200) NOT NULL DEFAULT '',
     UpdatedOn DATETIME NOT NULL DEFAULT '',
@@ -899,7 +904,7 @@ FROM (SELECT *, SignalType.Acronym AS SignalType FROM Measurement LEFT OUTER JOI
     Historian ON Measurement.HistorianID = Historian.ID LEFT OUTER JOIN
     Runtime ON Device.ID = Runtime.SourceID AND Runtime.SourceTable = 'Device' LEFT OUTER JOIN
     Runtime AS RuntimeP ON RuntimeP.SourceID = Device.ParentID AND RuntimeP.SourceTable = 'Device'
-	CROSS JOIN Node
+    CROSS JOIN Node
 WHERE (Device.Enabled <> 0 OR Device.Enabled IS NULL) AND (Measurement.Enabled <> 0)
 UNION ALL
 SELECT NodeID, SourceNodeID, (Source || ':' || PointID) AS ID, SignalID, PointTag,
@@ -1120,7 +1125,7 @@ FROM Phasor P LEFT OUTER JOIN Phasor DP ON P.DestinationPhasorID = DP.ID
       LEFT OUTER JOIN Device D ON P.DeviceID = D.ID;
 
 CREATE VIEW StatisticMeasurement AS
-SELECT     MeasurementDetail.* 
+SELECT     MeasurementDetail.*
 FROM MeasurementDetail WHERE MeasurementDetail.SignalAcronym = 'STAT';
 
 CREATE VIEW AppRoleSecurityGroupDetail AS 
