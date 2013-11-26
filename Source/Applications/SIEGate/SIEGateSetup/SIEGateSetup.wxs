@@ -338,6 +338,9 @@
       <Component Id="EpriExport">
         <File Id="EpriExport.dll" Name="EpriExport.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EpriExport.dll" />
       </Component>
+      <Component Id="FileAdapters">
+        <File Id="FileAdapters.dll" Name="FileAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\FileAdapters.dll" />
+      </Component>
       <Component Id="Hadoop.Replication">
         <File Id="Hadoop.Replication.dll" Name="Hadoop.Replication.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Hadoop.Replication.dll" />
       </Component>
