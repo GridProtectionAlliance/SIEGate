@@ -45,6 +45,7 @@ ECHO Getting latest version...
 %tfs% get "%sourcetools%DataMigrationUtility.exe" /version:T /force /recursive /noprompt
 %tfs% get "%sourcetools%HistorianPlaybackUtility.exe" /version:T /force /recursive /noprompt
 %tfs% get "%sourcetools%HistorianView.exe" /version:T /force /recursive /noprompt
+%tfs% get "%sourcetools%NoInetFixUtil.exe" /version:T /force /recursive /noprompt
 
 ECHO.
 ECHO Checking out dependencies...
@@ -54,6 +55,7 @@ ECHO Checking out dependencies...
 %tfs% checkout "%sourcetools%DataMigrationUtility.exe" /noprompt
 %tfs% checkout "%sourcetools%HistorianPlaybackUtility.exe" /noprompt
 %tfs% checkout "%sourcetools%HistorianView.exe" /noprompt
+%tfs% checkout "%sourcetools%NoInetFixUtil.exe" /noprompt
 %tfs% checkout "%targetschema%" /recursive /noprompt
 
 ECHO.
@@ -64,6 +66,7 @@ XCOPY "%frameworktools%ConfigEditor\ConfigEditor.exe" "%sourcetools%Configuratio
 XCOPY "%frameworktools%DataMigrationUtility\DataMigrationUtility.exe" "%sourcetools%DataMigrationUtility.exe" /Y
 XCOPY "%frameworktools%HistorianPlaybackUtility\HistorianPlaybackUtility.exe" "%sourcetools%HistorianPlaybackUtility.exe" /Y
 XCOPY "%frameworktools%HistorianView\HistorianView.exe" "%sourcetools%HistorianView.exe" /Y
+XCOPY "%frameworktools%NoInetFixUtil\NoInetFixUtil.exe" "%sourcetools%NoInetFixUtil.exe" /Y
 
 ECHO.
 ECHO Updating database schema defintions...
@@ -101,6 +104,7 @@ ECHO Checking in dependencies...
 %tfs% checkin "%sourcetools%DataMigrationUtility.exe" /noprompt /comment:"Feature Development: Updated grid solutions framework tool: DataMigrationUtility."
 %tfs% checkin "%sourcetools%HistorianPlaybackUtility.exe" /noprompt /comment:"Feature Development: Updated openHistorian tool: HistorianPlaybackUtility."
 %tfs% checkin "%sourcetools%HistorianView.exe" /noprompt /comment:"Feature Development: Updated openHistorian tool: HistorianView."
+%tfs% checkin "%sourcetools%NoInetFixUtil.exe" /noprompt /comment:"Feature Development: Updated grid solutions framework tool: NoInetFixUtil."
 %tfs% checkin "%targetschema%" /noprompt /recursive /comment:"Feature Development: Updated database schema definitions from GSF source."
 
 :Finalize
