@@ -30,9 +30,8 @@ namespace SIEGate
     public class ServiceHost : ServiceHostBase
     {
         public ServiceHost()
-            : base()
         {
-            InitializeComponent();
+            ServiceName = "SIEGate";
         }
 
         protected override void ServiceStartingHandler(object sender, EventArgs<string[]> e)
@@ -45,14 +44,6 @@ namespace SIEGate
 
             systemSettings.Add("CompanyName", "Grid Protection Alliance", "The name of the company who owns this instance of the SIEGate.");
             systemSettings.Add("CompanyAcronym", "GPA", "The acronym representing the company who owns this instance of the SIEGate.");
-        }
-
-        private void InitializeComponent()
-        {
-            // 
-            // ServiceHost
-            // 
-            this.ServiceName = "SIEGate";
         }
     }
 }
