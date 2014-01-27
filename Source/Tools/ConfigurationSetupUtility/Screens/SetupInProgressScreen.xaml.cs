@@ -40,12 +40,12 @@ using System.Security.AccessControl;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Web.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using GSF.Communication;
 using GSF.Identity;
+using GSF.Security;
 using Microsoft.Win32;
 using GSF;
 using GSF.Data;
@@ -202,11 +202,9 @@ namespace ConfigurationSetupUtility.Screens
             try
             {
                 "SetupString".Encrypt(App.CipherLookupKey, CipherStrength.Aes256);
-                //"SetupString".Encrypt(DataPublisher.CipherLookupKey, CipherStrength.Aes256);
             }
             catch
             {
-                //AppendStatusMessage(string.Format("WARNING: Failed to establish crypto keys due to exception: {0}", ex.Message));
             }
 
             if (configurationType == "database")
@@ -1127,7 +1125,7 @@ namespace ConfigurationSetupUtility.Screens
                     updatedByParameter.ParameterName = paramChar + "updatedBy";
 
                     nameParameter.Value = accountName;
-                    passwordParameter.Value = FormsAuthentication.HashPasswordForStoringInConfigFile(@"O3990\P78f9E66b:a35_V©6M13©6~2&[" + m_state["adminPassword"].ToString(), "SHA1");
+                    passwordParameter.Value = SecurityProviderUtility.EncryptPassword(m_state["adminPassword"].ToString());
                     firstNameParameter.Value = m_state["adminUserFirstName"].ToString();
                     lastNameParameter.Value = m_state["adminUserLastName"].ToString();
                     createdByParameter.Value = Thread.CurrentPrincipal.Identity.Name;
