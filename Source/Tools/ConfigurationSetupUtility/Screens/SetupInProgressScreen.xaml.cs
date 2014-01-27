@@ -1032,6 +1032,7 @@ namespace ConfigurationSetupUtility.Screens
             Dictionary<string, string> dataProviderSettings = dataProviderString.ParseKeyValuePairs();
             string assemblyName = dataProviderSettings["AssemblyName"];
             string connectionTypeName = dataProviderSettings["ConnectionType"];
+            string accountName = string.Empty;
             string adminRoleID = string.Empty;
             string adminUserID = string.Empty;
 
@@ -1088,11 +1089,13 @@ namespace ConfigurationSetupUtility.Screens
                     IDbDataParameter createdByParameter = adminCredentialCommand.CreateParameter();
                     IDbDataParameter updatedByParameter = adminCredentialCommand.CreateParameter();
 
+                    accountName = UserInfo.AccountNameToSID(m_state["adminUserName"].ToString());
+
                     nameParameter.ParameterName = paramChar + "name";
                     createdByParameter.ParameterName = paramChar + "createdBy";
                     updatedByParameter.ParameterName = paramChar + "updatedBy";
 
-                    nameParameter.Value = m_state["adminUserName"].ToString();
+                    nameParameter.Value = accountName;
                     createdByParameter.Value = Thread.CurrentPrincipal.Identity.Name;
                     updatedByParameter.Value = Thread.CurrentPrincipal.Identity.Name;
 
@@ -1114,6 +1117,8 @@ namespace ConfigurationSetupUtility.Screens
                     IDbDataParameter createdByParameter = adminCredentialCommand.CreateParameter();
                     IDbDataParameter updatedByParameter = adminCredentialCommand.CreateParameter();
 
+                    accountName = m_state["adminUserName"].ToString();
+
                     nameParameter.ParameterName = paramChar + "name";
                     passwordParameter.ParameterName = paramChar + "password";
                     firstNameParameter.ParameterName = paramChar + "firstName";
@@ -1121,7 +1126,7 @@ namespace ConfigurationSetupUtility.Screens
                     createdByParameter.ParameterName = paramChar + "createdBy";
                     updatedByParameter.ParameterName = paramChar + "updatedBy";
 
-                    nameParameter.Value = m_state["adminUserName"].ToString();
+                    nameParameter.Value = accountName;
                     passwordParameter.Value = FormsAuthentication.HashPasswordForStoringInConfigFile(@"O3990\P78f9E66b:a35_V©6M13©6~2&[" + m_state["adminPassword"].ToString(), "SHA1");
                     firstNameParameter.Value = m_state["adminUserFirstName"].ToString();
                     lastNameParameter.Value = m_state["adminUserLastName"].ToString();
@@ -1150,7 +1155,7 @@ namespace ConfigurationSetupUtility.Screens
                 IDbDataParameter newNameParameter = adminCredentialCommand.CreateParameter();
 
                 newNameParameter.ParameterName = paramChar + "name";
-                newNameParameter.Value = m_state["adminUserName"].ToString();
+                newNameParameter.Value = accountName;
 
                 adminCredentialCommand.CommandText = "SELECT ID FROM UserAccount WHERE Name = " + paramChar + "name";
                 adminCredentialCommand.Parameters.Clear();

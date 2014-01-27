@@ -83,6 +83,10 @@ namespace SIEGateManager
             }
             catch (Exception ex)
             {
+                // First attempt to display a modal dialog will fail to block this
+                // thread -- modal dialog displayed by the error logger will block now
+                MessageBox.Show(ex.Message);
+
                 // Log and display error, then exit application - manager must connect to database to continue
                 m_errorLogger.Log(new InvalidOperationException(string.Format("{0} cannot connect to database: {1}", m_title, ex.Message), ex), true);
             }
@@ -102,8 +106,12 @@ namespace SIEGateManager
             }
             catch (Exception ex)
             {
+                // First attempt to display a modal dialog will fail to block this
+                // thread -- modal dialog displayed by the error logger will block now
+                MessageBox.Show(ex.Message);
+
                 // Log and display error, but continue on - if manager fails to load MirrorMode from the config file, it can just fall back on the default
-                m_errorLogger.Log(new InvalidOperationException(string.Format("{0} cannot connect to database: {1}", m_title, ex.Message), ex));
+                m_errorLogger.Log(new InvalidOperationException(string.Format("{0} cannot access mirror mode setting in configuration file - defaulting to true: {1}", m_title, ex.Message), ex));
             }
 
             IsolatedStorageManager.WriteToIsolatedStorage("MirrorMode", mirrorMode);
