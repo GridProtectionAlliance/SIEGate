@@ -86,8 +86,8 @@ namespace SIEGateManager
             //#endif
 
             InitializeComponent();
-            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
-            this.Closing += new System.ComponentModel.CancelEventHandler(MainWindow_Closing);
+            Loaded += MainWindow_Loaded;
+            Closing += MainWindow_Closing;
             Title = ((App)Application.Current).Title;
             TextBoxTitle.Text = AssemblyInfo.EntryAssembly.Title;
 
@@ -95,10 +95,11 @@ namespace SIEGateManager
             CommonFunctions.CurrentPrincipal = Thread.CurrentPrincipal as SecurityPrincipal;
 
             if (!string.IsNullOrEmpty(CommonFunctions.CurrentUser))
-                Title += " - " + CommonFunctions.CurrentUser;
+                Title += " - " + SecurityProviderCache.CurrentProvider.UserData.LoginID;
 
             ConfigurationFile configFile = ConfigurationFile.Current;
             CategorizedSettingsElementCollection configSettings = configFile.Settings["systemSettings"];
+
             if (configSettings["NodeID"] != null)
                 m_defaultNodeID = configSettings["NodeID"].Value;
 
