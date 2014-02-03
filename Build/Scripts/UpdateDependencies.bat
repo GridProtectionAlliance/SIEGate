@@ -79,6 +79,7 @@ MOVE /Y "%sourceschema%\Oracle\*.*" "%targetschema%\Oracle\"
 MOVE /Y "%sourceschema%\SQL Server\*.*" "%targetschema%\SQL Server\"
 MOVE /Y "%sourceschema%\SQLite\*.*" "%targetschema%\SQLite\"
 %replace% /r /v "%targetschema%\*.sql" GSFSchema SIEGate
+%replace% /r /v "%targetschema%\*.sql" "--*" "-- "
 %replace% /r /v "%targetschema%\*SampleDataSet.sql" 8500 8505
 %replace% /r /v "%targetschema%\*SampleDataSet.sql" 6165 6170
 %replace% /r /v "%targetschema%\*SampleDataSet.sql" "e7a5235d-cb6f-4864-a96e-a8686f36e599" "d1ebffbb-d318-463f-9822-394fd0e968b0"
