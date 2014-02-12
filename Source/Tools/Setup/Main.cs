@@ -49,11 +49,6 @@ namespace Setup
 
         private void Main_Load(object sender, EventArgs e)
         {
-            radioButton64bit.Enabled = (IntPtr.Size > 4);
-
-            if (radioButton64bit.Enabled)
-                radioButton64bit.Checked = true;
-
             try
             {
                 Version version = Assembly.GetEntryAssembly().GetName().Version;
@@ -79,7 +74,7 @@ namespace Setup
                     if (MessageBox.Show("Microsoft .NET 4.5 does not appear to be installed on this computer. The .NET 4.5 framework is required to be installed before you continue installation. Would you like to install it now?", ".NET 4.5 Check", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         Process net40Install;
-                        string netInstallPath = "Installers\\dotnetfx45_full_x86_x64.exe";
+                        const string netInstallPath = "Installers\\dotnetfx45_full_x86_x64.exe";
 
                         if (File.Exists(netInstallPath))
                         {
@@ -187,7 +182,7 @@ namespace Setup
                     // Read registry installation parameters
                     string installPath, targetBitSize;
 
-                    if (IntPtr.Size == 4 || radioButton64bit.Checked)
+                    if (IntPtr.Size == 4)
                     {
                         // Read values from primary registry location
                         installPath = AddPathSuffix(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Grid Protection Alliance\SIEGate", "InstallPath", "").ToString().Trim());
@@ -232,10 +227,10 @@ namespace Setup
                     else
                     {
                         // Install current version of the PMU Connection Tester
-                        if (radioButton64bit.Checked)
-                            connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup64.msi";
-                        else
-                            connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup.msi";
+                        connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup64.msi";
+
+                        // 32-bit version...
+                        //connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup.msi";
                     }
 
                     connectionTesterInstall.StartInfo.UseShellExecute = false;
@@ -317,13 +312,10 @@ namespace Setup
 
                 if (instances.Length > 0)
                 {
-                    int total = 0;
-
                     // Terminate all instances of TSF Manager running on the local computer
                     foreach (Process process in instances)
                     {
                         process.Kill();
-                        total++;
                     }
                 }
             }
@@ -332,15 +324,15 @@ namespace Setup
             }
 
             // Attempt to access service controller for the SIEGate
-            ServiceController SIEGateServiceController = null;
+            ServiceController siegateServiceController = null;
 
             try
             {
                 foreach (ServiceController service in ServiceController.GetServices())
                 {
-                    if (string.Compare(service.ServiceName, "SIEGate", true) == 0)
+                    if (service.ServiceName.Equals("SIEGate", StringComparison.OrdinalIgnoreCase))
                     {
-                        SIEGateServiceController = service;
+                        siegateServiceController = service;
                         break;
                     }
                 }
@@ -349,16 +341,16 @@ namespace Setup
             {
             }
 
-            if (SIEGateServiceController != null)
+            if ((object)siegateServiceController != null)
             {
                 try
                 {
-                    if (SIEGateServiceController.Status == ServiceControllerStatus.Running)
+                    if (siegateServiceController.Status == ServiceControllerStatus.Running)
                     {
-                        SIEGateServiceController.Stop();
+                        siegateServiceController.Stop();
 
                         // Can't wait forever for service to stop, so we time-out after 20 seconds
-                        SIEGateServiceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20.0D));
+                        siegateServiceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20.0D));
                     }
                 }
                 catch
@@ -373,13 +365,10 @@ namespace Setup
 
                 if (instances.Length > 0)
                 {
-                    int total = 0;
-
                     // Terminate all instances of SIEGate running on the local computer
                     foreach (Process process in instances)
                     {
                         process.Kill();
-                        total++;
                     }
                 }
             }
@@ -396,13 +385,10 @@ namespace Setup
 
                     if (instances.Length > 0)
                     {
-                        int total = 0;
-
                         // Terminate all instances of PMU Connection Tester running on the local computer
                         foreach (Process process in instances)
                         {
                             process.Kill();
-                            total++;
                         }
                     }
                 }
