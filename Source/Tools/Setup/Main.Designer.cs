@@ -36,14 +36,13 @@
             this.buttonUninstall = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonInstall = new System.Windows.Forms.Button();
+            this.labelInstallationOptions = new System.Windows.Forms.Label();
             this.labelNotes = new System.Windows.Forms.Label();
             this.tabPageReleaseNotes = new System.Windows.Forms.TabPage();
             this.richTextBoxReleaseNotes = new System.Windows.Forms.RichTextBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxConnectionTester = new System.Windows.Forms.CheckBox();
-            this.labelInstallationOptions = new System.Windows.Forms.Label();
             this.tabControlMain.SuspendLayout();
             this.tabPageInstallOptions.SuspendLayout();
             this.groupBoxInstallationOptions.SuspendLayout();
@@ -81,7 +80,6 @@
             this.groupBoxInstallationOptions.Controls.Add(this.buttonUninstall);
             this.groupBoxInstallationOptions.Controls.Add(this.buttonCancel);
             this.groupBoxInstallationOptions.Controls.Add(this.buttonInstall);
-            this.groupBoxInstallationOptions.Controls.Add(this.checkBoxConnectionTester);
             this.groupBoxInstallationOptions.Controls.Add(this.labelInstallationOptions);
             this.groupBoxInstallationOptions.Location = new System.Drawing.Point(4, 7);
             this.groupBoxInstallationOptions.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -125,6 +123,17 @@
             this.buttonInstall.Text = "&Install";
             this.buttonInstall.UseVisualStyleBackColor = true;
             this.buttonInstall.Click += new System.EventHandler(this.buttonInstall_Click);
+            // 
+            // labelInstallationOptions
+            // 
+            this.labelInstallationOptions.Location = new System.Drawing.Point(36, 28);
+            this.labelInstallationOptions.Name = "labelInstallationOptions";
+            this.labelInstallationOptions.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.labelInstallationOptions.Size = new System.Drawing.Size(296, 66);
+            this.labelInstallationOptions.TabIndex = 0;
+            this.labelInstallationOptions.Text = "This setup utility will install SIEGate and/or related tools. This installation r" +
+    "equires .NET 4.5.\r\nSIEGate is only available as a 64-bit installation.";
+            this.labelInstallationOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelNotes
             // 
@@ -183,29 +192,6 @@
             this.pictureBoxLogo.TabIndex = 1;
             this.pictureBoxLogo.TabStop = false;
             // 
-            // checkBoxConnectionTester
-            // 
-            this.checkBoxConnectionTester.AutoSize = true;
-            this.checkBoxConnectionTester.Checked = true;
-            this.checkBoxConnectionTester.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxConnectionTester.Location = new System.Drawing.Point(36, 84);
-            this.checkBoxConnectionTester.Name = "checkBoxConnectionTester";
-            this.checkBoxConnectionTester.Size = new System.Drawing.Size(303, 20);
-            this.checkBoxConnectionTester.TabIndex = 1;
-            this.checkBoxConnectionTester.Text = "Install PMU Connection Tester v4.4.0 - July 2013";
-            this.checkBoxConnectionTester.UseVisualStyleBackColor = true;
-            // 
-            // labelInstallationOptions
-            // 
-            this.labelInstallationOptions.Location = new System.Drawing.Point(15, 17);
-            this.labelInstallationOptions.Name = "labelInstallationOptions";
-            this.labelInstallationOptions.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.labelInstallationOptions.Size = new System.Drawing.Size(347, 66);
-            this.labelInstallationOptions.TabIndex = 0;
-            this.labelInstallationOptions.Text = "This setup utility will install SIEGate and/or related tools. This installation r" +
-    "equires .NET 4.5. SIEGate is only available as a 64-bit installation.";
-            this.labelInstallationOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -227,7 +213,6 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPageInstallOptions.ResumeLayout(false);
             this.groupBoxInstallationOptions.ResumeLayout(false);
-            this.groupBoxInstallationOptions.PerformLayout();
             this.tabPageReleaseNotes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
@@ -249,7 +234,6 @@
         private System.Windows.Forms.TabPage tabPageReleaseNotes;
         private System.Windows.Forms.RichTextBox richTextBoxReleaseNotes;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.CheckBox checkBoxConnectionTester;
         private System.Windows.Forms.Label labelInstallationOptions;
     }
 }

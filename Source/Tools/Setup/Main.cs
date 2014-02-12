@@ -203,45 +203,45 @@ namespace Setup
                     }
                 }
 
-                // Install or uninstall PMU Connection Tester
-                if (checkBoxConnectionTester.Checked)
-                {
-                    Process connectionTesterInstall = new Process();
+                //// Install or uninstall PMU Connection Tester
+                //if (checkBoxConnectionTester.Checked)
+                //{
+                //    Process connectionTesterInstall = new Process();
 
-                    connectionTesterInstall.StartInfo.FileName = "msiexec.exe";
+                //    connectionTesterInstall.StartInfo.FileName = "msiexec.exe";
 
-                    if (type == SetupType.Uninstall)
-                    {
-                        // Uninstall any version of the PMU Connection Tester
-                        connectionTesterInstall.StartInfo.Arguments = "/x {6602B32E-0671-4FE1-A7A4-63025D325F49} /qr";
-                    }
-                    else
-                    {
-                        // Install current version of the PMU Connection Tester
-                        connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup64.msi";
+                //    if (type == SetupType.Uninstall)
+                //    {
+                //        // Uninstall any version of the PMU Connection Tester
+                //        connectionTesterInstall.StartInfo.Arguments = "/x {6602B32E-0671-4FE1-A7A4-63025D325F49} /qr";
+                //    }
+                //    else
+                //    {
+                //        // Install current version of the PMU Connection Tester
+                //        connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup64.msi";
 
-                        // 32-bit version...
-                        //connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup.msi";
-                    }
+                //        // 32-bit version...
+                //        //connectionTesterInstall.StartInfo.Arguments = "/i Installers\\PMUConnectionTesterSetup.msi";
+                //    }
 
-                    connectionTesterInstall.StartInfo.UseShellExecute = false;
-                    connectionTesterInstall.StartInfo.CreateNoWindow = true;
-                    connectionTesterInstall.Start();
-                    connectionTesterInstall.WaitForExit();
+                //    connectionTesterInstall.StartInfo.UseShellExecute = false;
+                //    connectionTesterInstall.StartInfo.CreateNoWindow = true;
+                //    connectionTesterInstall.Start();
+                //    connectionTesterInstall.WaitForExit();
 
-                    if (connectionTesterInstall.ExitCode == 0)
-                    {
-                        if (closeOnSuccess)
-                            this.Close();
-                        else
-                            this.WindowState = FormWindowState.Normal;
+                //    if (connectionTesterInstall.ExitCode == 0)
+                //    {
+                //        if (closeOnSuccess)
+                //            this.Close();
+                //        else
+                //            this.WindowState = FormWindowState.Normal;
 
-                        return true;
-                    }
+                //        return true;
+                //    }
 
-                    this.WindowState = FormWindowState.Normal;
-                    return false;
-                }
+                //    this.WindowState = FormWindowState.Normal;
+                //    return false;
+                //}
 
                 if (closeOnSuccess)
                     this.Close();
@@ -367,26 +367,26 @@ namespace Setup
             {
             }
 
-            // If uninstalling the PMU Connection Tester, we try to stop any running instances
-            if (checkBoxConnectionTester.Checked)
-            {
-                try
-                {
-                    Process[] instances = Process.GetProcessesByName("PMUConnectionTester");
+            //// If uninstalling the PMU Connection Tester, we try to stop any running instances
+            //if (checkBoxConnectionTester.Checked)
+            //{
+            //    try
+            //    {
+            //        Process[] instances = Process.GetProcessesByName("PMUConnectionTester");
 
-                    if (instances.Length > 0)
-                    {
-                        // Terminate all instances of PMU Connection Tester running on the local computer
-                        foreach (Process process in instances)
-                        {
-                            process.Kill();
-                        }
-                    }
-                }
-                catch
-                {
-                }
-            }
+            //        if (instances.Length > 0)
+            //        {
+            //            // Terminate all instances of PMU Connection Tester running on the local computer
+            //            foreach (Process process in instances)
+            //            {
+            //                process.Kill();
+            //            }
+            //        }
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
         }
     }
 }
