@@ -182,18 +182,9 @@ namespace Setup
                     // Read registry installation parameters
                     string installPath, targetBitSize;
 
-                    if (IntPtr.Size == 4)
-                    {
-                        // Read values from primary registry location
-                        installPath = AddPathSuffix(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Grid Protection Alliance\SIEGate", "InstallPath", "").ToString().Trim());
-                        targetBitSize = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Grid Protection Alliance\SIEGate", "TargetBitSize", "32bit").ToString().Trim();
-                    }
-                    else
-                    {
-                        // Read values from 32-bit virtualized registry location
-                        installPath = AddPathSuffix(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Grid Protection Alliance\SIEGate", "InstallPath", "").ToString().Trim());
-                        targetBitSize = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Grid Protection Alliance\SIEGate", "TargetBitSize", "32bit").ToString().Trim();
-                    }
+                    // Read values from primary registry location
+                    installPath = AddPathSuffix(Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Grid Protection Alliance\SIEGate", "InstallPath", "").ToString().Trim());
+                    targetBitSize = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Grid Protection Alliance\SIEGate", "TargetBitSize", "32bit").ToString().Trim();
 
                     try
                     {
