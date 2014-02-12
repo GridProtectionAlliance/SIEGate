@@ -32,9 +32,11 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 using GSF;
 using GSF.Communication;
 using GSF.Data;
+using GSF.IO;
 
 namespace ConfigurationSetupUtility.Screens
 {
@@ -279,6 +281,9 @@ namespace ConfigurationSetupUtility.Screens
                 string newDatabaseMessage = "Please enter the needed information about the\r\nSQL Server database you would like to create.";
                 string oldDatabaseMessage = "Please enter the needed information about\r\nyour existing SQL Server database.";
 
+                XDocument serviceConfig;
+                string connectionString;
+
                 m_state["sqlServerSetup"] = m_sqlServerSetup;
                 m_sqlServerSetup.HostName = m_hostNameTextBox.Text;
                 m_sqlServerSetup.DatabaseName = m_databaseNameTextBox.Text;
@@ -317,6 +322,29 @@ namespace ConfigurationSetupUtility.Screens
                     m_state.Add("useSqlServerIntegratedSecurity", false);
 
                 m_databaseNameTextBox.Text = migrate ? "SIEGatev2" : "SIEGate";
+
+                // When using an existing database as-is, read existing connection settings out of the configuration file
+                if (existing && !migrate)
+                {
+                    serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+
+                    connectionString = serviceConfig
+                        .Descendants("systemSettings")
+                        .SelectMany(systemSettings => systemSettings.Elements("add"))
+                        .Where(element => "ConnectionString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                        .Select(element => (string)element.Attribute("value"))
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(connectionString))
+                    {
+                        m_sqlServerSetup.ConnectionString = connectionString;
+                        m_hostNameTextBox.Text = m_sqlServerSetup.HostName;
+                        m_databaseNameTextBox.Text = m_sqlServerSetup.DatabaseName;
+                        m_adminUserNameTextBox.Text = m_sqlServerSetup.UserName;
+                        m_adminPasswordTextBox.Password = m_sqlServerSetup.Password;
+                        m_checkBoxIntegratedSecurity.IsChecked = ((object)m_sqlServerSetup.IntegratedSecurity != null);
+                    }
+                }
             }
         }
 

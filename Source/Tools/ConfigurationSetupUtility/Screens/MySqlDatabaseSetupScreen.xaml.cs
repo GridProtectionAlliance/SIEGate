@@ -37,8 +37,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Xml.Linq;
 using GSF;
 using GSF.Data;
+using GSF.IO;
 
 namespace ConfigurationSetupUtility.Screens
 {
@@ -297,6 +299,9 @@ namespace ConfigurationSetupUtility.Screens
                 bool migrate = existing && Convert.ToBoolean(m_state["updateConfiguration"]);
                 Visibility newUserVisibility = (existing && !migrate) ? Visibility.Collapsed : Visibility.Visible;
 
+                XDocument serviceConfig;
+                string connectionString;
+
                 m_state["mySqlSetup"] = m_mySqlSetup;
                 m_mySqlSetup.HostName = m_hostNameTextBox.Text;
                 m_mySqlSetup.DatabaseName = m_databaseNameTextBox.Text;
@@ -332,6 +337,28 @@ namespace ConfigurationSetupUtility.Screens
                     m_state.Add("encryptMySqlConnectionStrings", false);
 
                 m_databaseNameTextBox.Text = migrate ? "SIEGatev2" : "SIEGate";
+
+                // When using an existing database as-is, read existing connection settings out of the configuration file
+                if (existing && !migrate)
+                {
+                    serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+
+                    connectionString = serviceConfig
+                        .Descendants("systemSettings")
+                        .SelectMany(systemSettings => systemSettings.Elements("add"))
+                        .Where(element => "ConnectionString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                        .Select(element => (string)element.Attribute("value"))
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(connectionString))
+                    {
+                        m_mySqlSetup.ConnectionString = connectionString;
+                        m_hostNameTextBox.Text = m_mySqlSetup.HostName;
+                        m_databaseNameTextBox.Text = m_mySqlSetup.DatabaseName;
+                        m_adminUserNameTextBox.Text = m_mySqlSetup.UserName;
+                        m_adminPasswordTextBox.Password = m_mySqlSetup.Password;
+                    }
+                }
             }
         }
 

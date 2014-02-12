@@ -25,9 +25,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 using Microsoft.Win32;
 using GSF;
 using GSF.Data;
@@ -238,6 +240,11 @@ namespace ConfigurationSetupUtility.Screens
             string newDatabaseMessage = "Please select the location in which to save the new database file.";
             string oldDatabaseMessage = "Please select the location of your existing database file.";
 
+            XDocument serviceConfig;
+            string connectionString;
+            Dictionary<string, string> settings;
+            string setting;
+
             m_sqliteDatabaseInstructionTextBlock.Text = (!existing || migrate) ? newDatabaseMessage : oldDatabaseMessage;
 
             try
@@ -259,6 +266,27 @@ namespace ConfigurationSetupUtility.Screens
 
             if (!m_state.ContainsKey("sqliteDatabaseFilePath"))
                 m_state.Add("sqliteDatabaseFilePath", m_sqliteDatabaseFilePathTextBox.Text);
+
+            // When using an existing database as-is, read existing connection settings out of the configuration file
+            if (existing && !migrate)
+            {
+                serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+
+                connectionString = serviceConfig
+                    .Descendants("systemSettings")
+                    .SelectMany(systemSettings => systemSettings.Elements("add"))
+                    .Where(element => "ConnectionString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                    .Select(element => (string)element.Attribute("value"))
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    settings = connectionString.ParseKeyValuePairs();
+
+                    if (settings.TryGetValue("Data Source", out setting) && File.Exists(setting))
+                        m_sqliteDatabaseFilePathTextBox.Text = setting;
+                }
+            }
         }
 
         // Occurs when the user changes the path name of the SQLite database file.
