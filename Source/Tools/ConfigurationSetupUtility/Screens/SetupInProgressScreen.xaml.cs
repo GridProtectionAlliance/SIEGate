@@ -281,7 +281,7 @@ namespace ConfigurationSetupUtility.Screens
                             string scriptPath = Directory.GetCurrentDirectory() + "\\Database scripts\\MySQL\\" + scriptName;
                             AppendStatusMessage(string.Format("Attempting to run {0} script...", scriptName));
                             mySqlSetup.ExecuteScript(scriptPath);
-                            progress += 90 / scriptNames.Count;
+                            progress += 85 / scriptNames.Count;
                             UpdateProgressBar(progress);
                             AppendStatusMessage(string.Format("{0} ran successfully.", scriptName));
                             AppendStatusMessage(string.Empty);
@@ -303,7 +303,7 @@ namespace ConfigurationSetupUtility.Screens
                             mySqlSetup.UserName = user;
                             mySqlSetup.Password = pass;
 
-                            UpdateProgressBar(98);
+                            UpdateProgressBar(90);
                             AppendStatusMessage("New database user created successfully.");
                             AppendStatusMessage(string.Empty);
                         }
@@ -312,6 +312,7 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             SetUpStatisticsHistorian(mySqlSetup.ConnectionString, dataProviderString);
                             SetupAdminUserCredentials(mySqlSetup.ConnectionString, dataProviderString);
+                            UpdateProgressBar(95);
                         }
                     }
                     else
@@ -395,7 +396,7 @@ namespace ConfigurationSetupUtility.Screens
                             string scriptPath = Directory.GetCurrentDirectory() + "\\Database scripts\\SQL Server\\" + scriptName;
                             AppendStatusMessage(string.Format("Attempting to run {0} script...", scriptName));
                             sqlServerSetup.ExecuteScript(scriptPath);
-                            progress += 90 / scriptNames.Count;
+                            progress += 80 / scriptNames.Count;
                             UpdateProgressBar(progress);
                             AppendStatusMessage(string.Format("{0} ran successfully.", scriptName));
                             AppendStatusMessage(string.Empty);
@@ -408,35 +409,30 @@ namespace ConfigurationSetupUtility.Screens
                         // Create new SQL Server database user.
                         if (createNewUser)
                         {
-                            string user = m_state["newSqlServerUserName"].ToString();
-                            string pass = m_state["newSqlServerUserPassword"].ToString();
+                            string userName = m_state["newSqlServerUserName"].ToString();
+                            string password = m_state["newSqlServerUserPassword"].ToString();
 
-                            AppendStatusMessage(string.Format("Attempting to create new user {0}...", user));
+                            AppendStatusMessage(string.Format("Attempting to create new user {0}...", userName));
                             string db = sqlServerSetup.DatabaseName;
 
-                            sqlServerSetup.DatabaseName = "master";
-                            sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] WITH PASSWORD=N'{1}', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF", user, pass));
+                            AppendStatusMessage(string.Format("Attempting to create new login {0}...", userName));
+                            sqlServerSetup.CreateLogin(userName, password);
+                            AppendStatusMessage("Database login created successfully.");
 
-                            sqlServerSetup.DatabaseName = db;
-                            sqlServerSetup.ExecuteStatement(string.Format("IF DATABASE_PRINCIPAL_ID('{0}') IS NULL CREATE USER [{0}] FOR LOGIN [{0}]", user));
-                            sqlServerSetup.ExecuteStatement("IF DATABASE_PRINCIPAL_ID('SIEGateAdminRole') IS NULL CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]");
-                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", user));
-                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'"));
-                            sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'"));
+                            AppendStatusMessage(string.Format("Attempting to grant access to database {0} for login {1}...", sqlServerSetup.DatabaseName, userName));
+                            sqlServerSetup.GrantDatabaseAccess(userName);
+                            AppendStatusMessage("Database access granted successfully.");
 
-                            sqlServerSetup.UserName = user;
-                            sqlServerSetup.Password = pass;
+                            sqlServerSetup.UserName = userName;
+                            sqlServerSetup.Password = password;
 
-                            UpdateProgressBar(98);
-                            AppendStatusMessage("New database user created successfully.");
-                            AppendStatusMessage(string.Empty);
+                            AppendStatusMessage("");
+                            UpdateProgressBar(90);
                         }
                         else if ((object)sqlServerSetup.IntegratedSecurity != null)
                         {
                             const string GroupName = "SIEGate Admins";
-
                             string host = sqlServerSetup.HostName.Split('\\')[0].Trim();
-                            string db = sqlServerSetup.DatabaseName;
 
                             bool useGroupLogin;
                             string serviceAccountName;
@@ -457,39 +453,47 @@ namespace ConfigurationSetupUtility.Screens
                                 if ((object)loginName != null)
                                 {
                                     AppendStatusMessage(string.Format("Attempting to add Windows authenticated database login for {0}...", loginName));
-
-                                    sqlServerSetup.DatabaseName = "master";
-                                    sqlServerSetup.ExecuteStatement(string.Format("IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name = N'{0}') CREATE LOGIN [{0}] FROM WINDOWS WITH DEFAULT_DATABASE=[master]", loginName));
-
-                                    sqlServerSetup.DatabaseName = db;
-                                    sqlServerSetup.ExecuteStatement(string.Format("IF DATABASE_PRINCIPAL_ID('{0}') IS NULL CREATE USER [{0}] FOR LOGIN [{0}]", loginName));
-                                    sqlServerSetup.ExecuteStatement("IF DATABASE_PRINCIPAL_ID('SIEGateAdminRole') IS NULL CREATE ROLE [SIEGateAdminRole] AUTHORIZATION [dbo]");
-                                    sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'SIEGateAdminRole', N'{0}'", loginName));
-                                    sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datareader', N'SIEGateAdminRole'"));
-                                    sqlServerSetup.ExecuteStatement(string.Format("EXEC sp_addrolemember N'db_datawriter', N'SIEGateAdminRole'"));
-
-                                    UpdateProgressBar(98);
+                                    sqlServerSetup.CreateLogin(loginName);
                                     AppendStatusMessage("Database login created successfully.");
-                                    AppendStatusMessage(string.Empty);
+
+                                    AppendStatusMessage(string.Format("Attempting to grant access to database {0} for login {1}...", sqlServerSetup.DatabaseName, loginName));
+                                    sqlServerSetup.GrantDatabaseAccess(loginName);
+                                    AppendStatusMessage("Database access granted successfully.");
+
+                                    AppendStatusMessage("");
                                 }
                             }
+
+                            UpdateProgressBar(90);
                         }
 
                         if (!migrate)
                         {
                             SetUpStatisticsHistorian(sqlServerSetup.ConnectionString, dataProviderString);
                             SetupAdminUserCredentials(sqlServerSetup.ConnectionString, dataProviderString);
+                            UpdateProgressBar(95);
                         }
                     }
                     else
                     {
-                        this.CanGoBack = true;
-                        ScreenManager sm = m_state["screenManager"] as ScreenManager;
-                        this.Dispatcher.Invoke((Action)delegate()
+                        object obj;
+                        ScreenManager screenManager;
+
+                        CanGoBack = true;
+
+                        if (m_state.TryGetValue("screenManager", out obj))
                         {
-                            while (!(sm.CurrentScreen is SqlServerDatabaseSetupScreen))
-                                sm.GoToPreviousScreen();
-                        });
+                            screenManager = obj as ScreenManager;
+
+                            if ((object)screenManager != null)
+                            {
+                                Dispatcher.Invoke(() =>
+                                {
+                                    while (!(screenManager.CurrentScreen is SqlServerDatabaseSetupScreen))
+                                        screenManager.GoToPreviousScreen();
+                                });
+                            }
+                        }
                     }
                 }
                 else if (m_state.ContainsKey("createNewNode") && Convert.ToBoolean(m_state["createNewNode"]))
@@ -501,6 +505,44 @@ namespace ConfigurationSetupUtility.Screens
                 string connectionString = sqlServerSetup.PooledConnectionString;
                 ModifyConfigFiles(connectionString, dataProviderString, Convert.ToBoolean(m_state["encryptSqlServerConnectionStrings"]));
                 SaveOldConnectionString();
+
+                // Now that config files have been modified, we can get the old connection string before database
+                // migration if the database is in fact being migrated. We open a connection to whatever database
+                // has UserAccount and SecurityGroup info so we can grant access to those accounts.
+                if (existing)
+                {
+                    if (!migrate)
+                    {
+                        connectionString = sqlServerSetup.ConnectionString;
+                    }
+                    else
+                    {
+                        if (m_state.ContainsKey("oldConnectionString") && m_state.ContainsKey("oldDataProviderString"))
+                        {
+                            connectionString = m_state["oldConnectionString"].ToString();
+                            dataProviderString = m_state["oldDataProviderString"].ToString();
+                        }
+                        else
+                        {
+                            connectionString = null;
+                            dataProviderString = null;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(connectionString) && !string.IsNullOrEmpty(dataProviderString))
+                    {
+                        AppendStatusMessage("Attempting to grant database access to existing user accounts and groups...");
+
+                        foreach (string loginName in GetExistingLoginNames(connectionString, dataProviderString))
+                        {
+                            AppendStatusMessage(string.Format("Granting database access to {0}...", loginName));
+                            sqlServerSetup.GrantDatabaseAccess(loginName);
+                            AppendStatusMessage("Database access granted successfully.");
+                        }
+
+                        AppendStatusMessage("");
+                    }
+                }
 
                 OnSetupSucceeded();
             }
@@ -604,6 +646,7 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             SetUpStatisticsHistorian(oracleSetup.ConnectionString, dataProviderString);
                             SetupAdminUserCredentials(oracleSetup.ConnectionString, dataProviderString);
+                            UpdateProgressBar(95);
                         }
                     }
                     else
@@ -706,6 +749,7 @@ namespace ConfigurationSetupUtility.Screens
                     {
                         SetUpStatisticsHistorian(connectionString, dataProviderString);
                         SetupAdminUserCredentials(connectionString, dataProviderString);
+                        UpdateProgressBar(95);
                     }
                 }
                 else if (m_state.ContainsKey("createNewNode") && Convert.ToBoolean(m_state["createNewNode"]))
@@ -865,6 +909,46 @@ namespace ConfigurationSetupUtility.Screens
                 if (connection != null)
                     connection.Dispose();
             }
+        }
+
+        private string[] GetExistingLoginNames(string connectionString, string dataProviderString)
+        {
+            const string SelectQuery = "SELECT Name FROM UserAccount WHERE LockedOut = 0 " +
+                "UNION ALL SELECT Name FROM SecurityGroup";
+
+            string[] loginNames;
+
+            Dictionary<string, string> dataProviderSettings = dataProviderString.ParseKeyValuePairs();
+            string assemblyName = dataProviderSettings["AssemblyName"];
+            string connectionTypeName = dataProviderSettings["ConnectionType"];
+            string adapterTypeName = dataProviderSettings["AdapterType"];
+
+            Assembly assembly = Assembly.Load(new AssemblyName(assemblyName));
+            Type connectionType = assembly.GetType(connectionTypeName);
+            Type adapterType = assembly.GetType(adapterTypeName);
+            IDbConnection connection = null;
+            DataTable loginNamesTable;
+
+            try
+            {
+                connection = (IDbConnection)Activator.CreateInstance(connectionType);
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                loginNamesTable = connection.RetrieveData(adapterType, SelectQuery);
+
+                loginNames = loginNamesTable.Select()
+                    .Select(row => row["Name"].ToNonNullString())
+                    .Select(UserInfo.SIDToAccountName)
+                    .ToArray();
+            }
+            finally
+            {
+                if ((object)connection != null)
+                    connection.Dispose();
+            }
+
+            return loginNames;
         }
 
         // Called when the user has asked to set up an XML configuration.
@@ -1182,7 +1266,6 @@ namespace ConfigurationSetupUtility.Screens
                 // Report success to the user.
                 AppendStatusMessage("Successfully set up credentials for administrative user.");
                 AppendStatusMessage(string.Empty);
-                UpdateProgressBar(97);
             }
             finally
             {
