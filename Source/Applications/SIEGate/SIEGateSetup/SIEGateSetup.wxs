@@ -331,12 +331,7 @@
       <Component Id="AdoAdapters">
         <File Id="AdoAdapters.dll" Name="AdoAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\AdoAdapters.dll" />
       </Component>
-      <Component Id="Ciloci.Flee">
-        <File Id="Ciloci.Flee.dll" Name="Ciloci.Flee.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Ciloci.Flee.dll" />
-      </Component>
-      <Component Id="COMTRADEAdapters">
-        <File Id="COMTRADEAdapters.dll" Name="COMTRADEAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\COMTRADEAdapters.dll" />
-      </Component>
+
       <Component Id="CsvAdapters">
         <File Id="CsvAdapters.dll" Name="CsvAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\CsvAdapters.dll" />
       </Component>
@@ -345,9 +340,6 @@
       </Component>
       <Component Id="Dnp3Adapters">
         <File Id="Dnp3Adapters.dll" Name="Dnp3Adapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Dnp3Adapters.dll" />
-      </Component>
-      <Component Id="DynamicCalculator">
-        <File Id="DynamicCalculator.dll" Name="DynamicCalculator.dll" Source="$(var.SolutionDir)\Dependencies\GSF\DynamicCalculator.dll" />
       </Component>
       <Component Id="EpriExport">
         <File Id="EpriExport.dll" Name="EpriExport.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EpriExport.dll" />
@@ -363,15 +355,6 @@
       </Component>
       <Component Id="ICCPExport">
         <File Id="ICCPExport.dll" Name="ICCPExport.dll" Source="$(var.SolutionDir)\Dependencies\GSF\ICCPExport.dll" />
-      </Component>
-      <Component Id="MongoAdapters">
-        <File Id="MongoAdapters.dll" Name="MongoAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\MongoAdapters.dll" />
-      </Component>
-      <Component Id="MongoDB">
-        <File Id="MongoDB.dll" Name="MongoDB.dll" Source="$(var.SolutionDir)\Dependencies\GSF\MongoDB.dll" />
-      </Component>
-      <Component Id="MongoDB.GridFS">
-        <File Id="MongoDB.GridFS.dll" Name="MongoDB.GridFS.dll" Source="$(var.SolutionDir)\Dependencies\GSF\MongoDB.GridFS.dll" />
       </Component>
       <Component Id="MySqlAdapters">
         <File Id="MySqlAdapters.dll" Name="MySqlAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\MySqlAdapters.dll" />
