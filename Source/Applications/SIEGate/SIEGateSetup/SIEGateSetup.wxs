@@ -350,6 +350,12 @@
       <Component Id="Dnp3Adapters">
         <File Id="Dnp3Adapters.dll" Name="Dnp3Adapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Dnp3Adapters.dll" />
       </Component>
+      <Component Id="DNP3CLRAdapter">
+        <File Id="DNP3CLRAdapter.dll" Name="DNP3CLRAdapter.dll" Source="$(var.SolutionDir)\Dependencies\GSF\DNP3CLRAdapter.dll" />
+      </Component>
+      <Component Id="DNP3CLRInterface">
+        <File Id="DNP3CLRInterface.dll" Name="DNP3CLRInterface.dll" Source="$(var.SolutionDir)\Dependencies\GSF\DNP3CLRInterface.dll" />
+      </Component>
       <Component Id="EpriExport">
         <File Id="EpriExport.dll" Name="EpriExport.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EpriExport.dll" />
       </Component>
