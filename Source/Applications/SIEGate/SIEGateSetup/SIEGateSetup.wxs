@@ -87,7 +87,6 @@
     <Icon Id="ConfigurationEditor.ico.exe" SourceFile="$(var.ProjectDir)\ConfigurationEditor.exe" />
     <Icon Id="HistorianPlaybackUtility.ico.exe" SourceFile="$(var.ProjectDir)\HistorianPlaybackUtility.exe" />
     <Icon Id="NoInetFixUtil.ico.exe" SourceFile="$(var.ProjectDir)\NoInetFixUtil.exe" />
-    <Icon Id="DNP3ConfigGenerator.ico.exe" SourceFile="$(var.ProjectDir)\DNP3ConfigGenerator.exe" />
     <Icon Id="HistorianView.ico.exe" SourceFile="$(var.ProjectDir)\HistorianView.exe" />
 
     <Property Id="SERVICENAME" Value="$(var.SIEGate.TargetName)" />
