@@ -44,6 +44,9 @@ namespace ConfigurationSetupUtility.Screens
     {
         #region [ Members ]
 
+        // Constants
+        private const string DataProviderString = "AssemblyName={System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139}; ConnectionType=System.Data.SQLite.SQLiteConnection; AdapterType=System.Data.SQLite.SQLiteDataAdapter";
+
         // Fields
         private Dictionary<string, object> m_state;
 
@@ -154,10 +157,9 @@ namespace ConfigurationSetupUtility.Screens
                         {
                             string destination = m_state["sqliteDatabaseFilePath"].ToString();
                             string connectionString = "Data Source=" + destination + "; Version=3";
-                            string dataProviderString = "AssemblyName={System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139}; ConnectionType=System.Data.SQLite.SQLiteConnection; AdapterType=System.Data.SQLite.SQLiteDataAdapter";
 
                             Dictionary<string, string> settings = connectionString.ParseKeyValuePairs();
-                            Dictionary<string, string> dataProviderSettings = dataProviderString.ParseKeyValuePairs();
+                            Dictionary<string, string> dataProviderSettings = DataProviderString.ParseKeyValuePairs();
                             string assemblyName = dataProviderSettings["AssemblyName"];
                             string connectionTypeName = dataProviderSettings["ConnectionType"];
                             string connectionSetting;
@@ -242,6 +244,8 @@ namespace ConfigurationSetupUtility.Screens
 
             XDocument serviceConfig;
             string connectionString;
+            string dataProviderString;
+
             Dictionary<string, string> settings;
             string setting;
 
@@ -279,7 +283,14 @@ namespace ConfigurationSetupUtility.Screens
                     .Select(element => (string)element.Attribute("value"))
                     .FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(connectionString))
+                dataProviderString = serviceConfig
+                    .Descendants("systemSettings")
+                    .SelectMany(systemSettings => systemSettings.Elements("add"))
+                    .Where(element => "DataProviderString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                    .Select(element => (string)element.Attribute("value"))
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(connectionString) && DataProviderString.Equals(dataProviderString, StringComparison.InvariantCultureIgnoreCase))
                 {
                     settings = connectionString.ParseKeyValuePairs();
 

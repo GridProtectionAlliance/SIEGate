@@ -248,6 +248,7 @@ namespace ConfigurationSetupUtility.Screens
 
                 XDocument serviceConfig;
                 string connectionString;
+                string dataProviderString;
 
                 m_state["oracleSetup"] = m_oracleSetup;
                 m_oracleSetup.TnsName = m_tnsNameTextBox.Text;
@@ -292,7 +293,14 @@ namespace ConfigurationSetupUtility.Screens
                         .Select(element => (string)element.Attribute("value"))
                         .FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(connectionString))
+                    dataProviderString = serviceConfig
+                        .Descendants("systemSettings")
+                        .SelectMany(systemSettings => systemSettings.Elements("add"))
+                        .Where(element => "ConnectionString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                        .Select(element => (string)element.Attribute("value"))
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(connectionString) && m_oracleSetup.DataProviderString.Equals(dataProviderString, StringComparison.InvariantCultureIgnoreCase))
                     {
                         m_oracleSetup.ConnectionString = connectionString;
                         m_tnsNameTextBox.Text = m_oracleSetup.TnsName;

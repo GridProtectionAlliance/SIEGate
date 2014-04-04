@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Management;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -283,6 +282,7 @@ namespace ConfigurationSetupUtility.Screens
 
                 XDocument serviceConfig;
                 string connectionString;
+                string dataProviderString;
 
                 m_state["sqlServerSetup"] = m_sqlServerSetup;
                 m_sqlServerSetup.HostName = m_hostNameTextBox.Text;
@@ -335,7 +335,14 @@ namespace ConfigurationSetupUtility.Screens
                         .Select(element => (string)element.Attribute("value"))
                         .FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(connectionString))
+                    dataProviderString = serviceConfig
+                        .Descendants("systemSettings")
+                        .SelectMany(systemSettings => systemSettings.Elements("add"))
+                        .Where(element => "DataProviderString".Equals((string)element.Attribute("name"), StringComparison.OrdinalIgnoreCase))
+                        .Select(element => (string)element.Attribute("value"))
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(connectionString) && m_sqlServerSetup.DataProviderString.Equals(dataProviderString, StringComparison.InvariantCultureIgnoreCase))
                     {
                         m_sqlServerSetup.ConnectionString = connectionString;
                         m_hostNameTextBox.Text = m_sqlServerSetup.HostName;
