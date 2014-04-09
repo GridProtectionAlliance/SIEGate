@@ -335,6 +335,10 @@ namespace ConfigurationSetupUtility.Screens
                 ModifyConfigFiles(mySqlSetup.ConnectionString, dataProviderString, Convert.ToBoolean(m_state["encryptMySqlConnectionStrings"]));
                 SaveOldConnectionString();
 
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -544,6 +548,10 @@ namespace ConfigurationSetupUtility.Screens
                     }
                 }
 
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -670,6 +678,10 @@ namespace ConfigurationSetupUtility.Screens
                 ModifyConfigFiles(connectionString, dataProviderString, oracleSetup.EncryptConnectionString);
                 SaveOldConnectionString();
 
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -760,6 +772,11 @@ namespace ConfigurationSetupUtility.Screens
                 // Modify the SIEGate configuration file.
                 ModifyConfigFiles(connectionString, dataProviderString, false);
                 SaveOldConnectionString();
+
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -958,6 +975,11 @@ namespace ConfigurationSetupUtility.Screens
             {
                 // Modify the SIEGate configuration file.
                 ModifyConfigFiles(m_state["xmlFilePath"].ToString(), string.Empty, false);
+
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -974,6 +996,11 @@ namespace ConfigurationSetupUtility.Screens
             {
                 // Modify the SIEGate configuration file.
                 ModifyConfigFiles(m_state["webServiceUrl"].ToString(), string.Empty, false);
+
+                // Remove cached configuration since it will
+                // likely be different from the new configuration
+                RemoveCachedConfiguration();
+
                 OnSetupSucceeded();
             }
             catch (Exception ex)
@@ -1759,6 +1786,20 @@ namespace ConfigurationSetupUtility.Screens
                     m_state["oldDatabaseType"] = "Unspecified";
                 }
             }
+        }
+
+        // Removes the cached configuration files.
+        private void RemoveCachedConfiguration()
+        {
+            string configurationCachePath = Path.Combine(Directory.GetCurrentDirectory(), "ConfigurationCache");
+            string binaryCachePath = Path.Combine(configurationCachePath, "SystemConfiguration.bin");
+            string xmlCachePath = Path.Combine(configurationCachePath, "SystemConfiguration.xml");
+
+            if (File.Exists(binaryCachePath))
+                File.Delete(binaryCachePath);
+
+            if (File.Exists(xmlCachePath))
+                File.Delete(xmlCachePath);
         }
 
         // Updates the progress bar to have the specified value.
