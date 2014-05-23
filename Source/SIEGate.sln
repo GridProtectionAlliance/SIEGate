@@ -175,7 +175,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIEGateManager", "Applicati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiX", "WiX", "{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26}"
 	ProjectSection(SolutionItems) = preProject
+		Dependencies\WiX\WixNetFxExtension.dll = Dependencies\WiX\WixNetFxExtension.dll
 		Dependencies\WiX\WixUIExtension.dll = Dependencies\WiX\WixUIExtension.dll
+		Dependencies\WiX\WixUtilExtension.dll = Dependencies\WiX\WixUtilExtension.dll
 	EndProjectSection
 EndProject
 Global

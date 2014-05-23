@@ -3,8 +3,13 @@
   <Product Id="{1AB71735-451A-4C0E-A71B-621E6E15F011}" Name="SIEGate" Language="1033" Version="!(bind.FileVersion.SIEGate.exe)" Manufacturer="Grid Protection Alliance" UpgradeCode="{5E79FA87-5D8B-4BE9-9B30-EF30FDE3933B}">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
+    <MediaTemplate EmbedCab="yes" />    
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate EmbedCab="yes" />
+    
+    <PropertyRef Id="NETFRAMEWORK45"/>    
+    <Condition Message='This setup requires Microsoft .NET Framework 4.5 or greater - this will need to be installed before installation can continue.'>
+      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    </Condition>
 
     <Feature Id="AllProducts" Title="All Products" Level="1" Display="expand" ConfigurableDirectory="INSTALLFOLDER">
       <!-- SIEGate -->
