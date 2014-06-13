@@ -263,6 +263,9 @@
       <Component Id="SerializedSchema">
         <File Id="SerializedSchema.bin" Name="SerializedSchema.bin" Source="$(var.SolutionDir)\Data\SerializedSchema.bin" />
       </Component>
+      <Component Id="EnableDisableSChannelSuites">
+        <File Id="EnableDisableSChannelSuites.ps1" Name="enable-disable-schannel-suites.ps1" Source="$(var.ProjectDir)\enable-disable-schannel-suites.ps1" />
+      </Component>
     </ComponentGroup>
 
     <!-- SIEGate Manager -->
