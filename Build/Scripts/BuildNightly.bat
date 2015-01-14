@@ -18,4 +18,4 @@
 ::*******************************************************************************************************
 
 @ECHO OFF
-C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\msbuild.exe SIEGate.buildproj /l:FileLogger,Microsoft.Build.Engine;logfile=SIEGate.output
+C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\msbuild.exe SIEGate.buildproj /p:SkipHelpFiles=true /l:FileLogger,Microsoft.Build.Engine;logfile=SIEGate.output
