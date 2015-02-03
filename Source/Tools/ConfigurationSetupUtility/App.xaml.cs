@@ -51,7 +51,7 @@ namespace ConfigurationSetupUtility
         public const string ManagerExe = "SIEGateManager.exe";
         public const string ManagerConfig = "SIEGateManager.exe.config";
         public const string BaseSqliteConfig = "SIEGate.db";
-        public static string SqliteConfigv2 = "SIEGate" + DatabaseVersionSuffix + ".db";
+        public readonly static string SqliteConfigv2 = "SIEGate" + DatabaseVersionSuffix + ".db";
         public const string SqliteSampleData = "SIEGate-SampleDataSet.db";
         public const string SqliteInitialData = "SIEGate-InitialDataSet.db";
         private readonly ErrorLogger m_errorLogger;
