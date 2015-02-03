@@ -26,6 +26,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Security.Principal;
 using System.Windows;
 using GSF.IO;
@@ -50,11 +51,11 @@ namespace ConfigurationSetupUtility
         public const string ManagerExe = "SIEGateManager.exe";
         public const string ManagerConfig = "SIEGateManager.exe.config";
         public const string BaseSqliteConfig = "SIEGate.db";
-        public const string SqliteConfigv2 = "SIEGatev2.db";
+        public static string SqliteConfigv2 = "SIEGate" + DatabaseVersionSuffix + ".db";
         public const string SqliteSampleData = "SIEGate-SampleDataSet.db";
         public const string SqliteInitialData = "SIEGate-InitialDataSet.db";
-        private ErrorLogger m_errorLogger;
-        private Func<string> m_defaultErrorText;
+        private readonly ErrorLogger m_errorLogger;
+        private readonly Func<string> m_defaultErrorText;
 
         #endregion
 
@@ -135,6 +136,38 @@ namespace ConfigurationSetupUtility
             }
 
             return errorMessage;
+        }
+
+        #endregion
+
+        #region [ Static ]
+
+        // Static Methods
+
+        private static string s_currentVersionLabel;
+
+        /// <summary>
+        /// Gets database name suffix for current application version, e.g., "v21" for version 2.1
+        /// </summary>
+        public static string DatabaseVersionSuffix
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(s_currentVersionLabel))
+                    return s_currentVersionLabel;
+
+                try
+                {
+                    Version version = Assembly.GetEntryAssembly().GetName().Version;
+                    s_currentVersionLabel = string.Format("v{0}{1}", version.Major, version.Minor);
+                }
+                catch
+                {
+                    s_currentVersionLabel = "v2";
+                }
+
+                return s_currentVersionLabel;
+            }
         }
 
         #endregion

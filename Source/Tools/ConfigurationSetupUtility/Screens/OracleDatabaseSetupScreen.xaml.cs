@@ -279,7 +279,7 @@ namespace ConfigurationSetupUtility.Screens
                     m_oracleSetup.SchemaPassword = m_schemaUserPasswordTextBox.Password;
                 }
 
-                m_schemaUserNameTextBox.Text = migrate ? "SIEGatev2" : "SIEGate";
+                m_schemaUserNameTextBox.Text = migrate ? "SIEGate" + App.DatabaseVersionSuffix : "SIEGate";
 
                 // When using an existing database as-is, read existing connection settings out of the configuration file
                 if (existing && !migrate)

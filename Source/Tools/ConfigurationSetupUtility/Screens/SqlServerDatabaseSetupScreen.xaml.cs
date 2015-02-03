@@ -321,7 +321,7 @@ namespace ConfigurationSetupUtility.Screens
                 if (!m_state.ContainsKey("useSqlServerIntegratedSecurity"))
                     m_state.Add("useSqlServerIntegratedSecurity", false);
 
-                m_databaseNameTextBox.Text = migrate ? "SIEGatev2" : "SIEGate";
+                m_databaseNameTextBox.Text = migrate ? "SIEGate" + App.DatabaseVersionSuffix : "SIEGate";
 
                 // When using an existing database as-is, read existing connection settings out of the configuration file
                 if (existing && !migrate)

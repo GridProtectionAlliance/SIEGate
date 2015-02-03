@@ -38,7 +38,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Linq;
-using GSF;
 using GSF.Data;
 using GSF.IO;
 
@@ -337,7 +336,7 @@ namespace ConfigurationSetupUtility.Screens
                 if (!m_state.ContainsKey("encryptMySqlConnectionStrings"))
                     m_state.Add("encryptMySqlConnectionStrings", false);
 
-                m_databaseNameTextBox.Text = migrate ? "SIEGatev2" : "SIEGate";
+                m_databaseNameTextBox.Text = migrate ? "SIEGate" + App.DatabaseVersionSuffix : "SIEGate";
 
                 // When using an existing database as-is, read existing connection settings out of the configuration file
                 if (existing && !migrate)
