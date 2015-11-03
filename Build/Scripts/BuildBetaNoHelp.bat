@@ -18,5 +18,5 @@
 ::*******************************************************************************************************
 
 @ECHO OFF
-C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\msbuild.exe SIEGate.buildproj /p:ForceBuild=true;SkipHelpFiles=true /l:FileLogger,Microsoft.Build.Engine;logfile=SIEGate.output
+"C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" SIEGate.buildproj /p:ForceBuild=true;SkipHelpFiles=true /l:FileLogger,Microsoft.Build.Engine;logfile=SIEGate.output
 PAUSE
