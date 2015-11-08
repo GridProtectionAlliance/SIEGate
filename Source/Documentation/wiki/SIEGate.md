@@ -4,24 +4,21 @@
 <body>
 <!--HtmlToGmd.Body-->
 <div id="NavigationMenu">
-<h1><a href="https://github.com/ajstadlin/SIEGate/blob/master/Source/Documentation/wiki/SIEGate.md">
-<img src="https://github.com/ajstadlin/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Logo.png" alt="SIEGate" /></a></h1>
+<h1><a href="https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate.md">
+<img src="https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Logo.png" alt="SIEGate" /></a></h1>
 <hr />
 <table style="width: 100%; border-collapse: collapse; border: 0px solid gray;">
 <tr>
 <td style="width: 25%; text-align:center;"><b><a href="http://www.gridprotectionalliance.com">Grid Protection Alliance</a></b></td>
-<td style="width: 25%; text-align:center;"><b><a href="https://github.com/ajstadlin/SIEGate">SIEGate Project on GitHub</a></b></td>
-<td style="width: 25%; text-align:center;"><b><a href="https://github.com/ajstadlin/SIEGate/blob/master/Source/Documentation/wiki/SIEGate.md">SIEGate Wiki</a></b></td>
-<td style="width: 25%; text-align:center;"><b><a href="https://github.com/ajstadlin/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Documentation.md">SIEGate Documentation</a></b></td>
+<td style="width: 25%; text-align:center;"><b><a href="https://github.com/GridProtectionAlliance/SIEGate">SIEGate Project on GitHub</a></b></td>
+<td style="width: 25%; text-align:center;"><b><a href="https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate.md">SIEGate Wiki</a></b></td>
+<td style="width: 25%; text-align:center;"><b><a href="https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Documentation.md">SIEGate Documentation</a></b></td>
 </tr>
 </table>
 </div>
 <hr />
 <!--/HtmlToGmd.Body-->
-
 <div class="WikiContent">
-
-                
 <div class="wikidoc">
 <p><strong>The SIEGate Project</strong></p>
 <p>The objectives of the SIEGate (the Secure Information Exchange Gateway pronounced Psy-gate) project are (1) to improve the security posture and minimize the external cyber-attack surface of electric utility control centers, and (2) to reduce the cost of
@@ -31,7 +28,7 @@
  expected on conclude in 2013.</p>
 <p><strong>Overview</strong></p>
 <p>As shown below, SIEGate provides a security isolation layer between critical internal infrastructure and external systems to protect reliability and market sensitive data. SIEGate reduces the cost of data exchange through ease-of-configuration.</p>
-<p style="text-align:center"><img src="https://github.com/ajstadlin/SIEGate/blob/master/Source/Documentation/wiki/files/SIEGate_Implementation_Diagram.png" alt="" width="480" style="vertical-align:middle"></p>
+<p style="text-align:center"><img src="https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/files/SIEGate_Implementation_Diagram.png" alt="" width="480" style="vertical-align:middle"></p>
 <p>SIEGate implements a true publish-subscribe architecture where the sending gateway owner authorizes data as available for subscription by specific consuming gateways. Once authorized, the consuming gateway automatically discovers the data that have been
  made available to it by other SIEGate nodes and allows the selective subscription to them. SIEGate data available for publication and subscription includes measurements, such as SCADA or synchrophasor data; files, such as SDX files; and higher-level notifications
  or alarms that are of significance for overall grid operation. These alarms may be configured to promulgate to all interconnected SIEGate nodes so that global alarms can be raised.</p>
@@ -49,17 +46,12 @@ openPG</a>. This development approach of extension of existing production-grade 
 <p>SIEGate has been designed for implementation on standard, high-availability hardware systems to reduce barriers to commercialization and use. It is targeted for production use on the &quot;minimal installation&quot; of Server Core for Windows Server 2008-R2
  which eliminates all non-essential OS features and services.</p>
 </div>
-<div></div>
-
-            
 </div>
-
 <hr />
 <div class="footer">
 Last edited Jun 26, 2013 at 9:21:39 PM by <a id="wikiEditByLink" href="https://github.com/ritchiecarroll">ritchiecarroll</a>, version 24<br />
 <!--HtmlToGmd.Migration-->Migrated from <a href="https://siegate.codeplex.com/">CodePlex</a> Nov 8, 2015 by <a href="https://github.com/ajstadlin">ajstadlin</a><!--/HtmlToGmd.Migration-->
 </div>
-
 <!--HtmlToGmd.Foot-->
 <div id="copyright">
 <hr />
