@@ -18,7 +18,6 @@
         <ComponentGroupRef Id="AdapterComponents" />
         <ComponentGroupRef Id="ConfigurationSetupUtilityComponents" />
         <ComponentGroupRef Id="GSFDependencyComponents" />
-        <ComponentGroupRef Id="SQLiteDependencyComponents" />
         <ComponentGroupRef Id="MySQLScriptComponents" />
         <ComponentGroupRef Id="OracleScriptComponents" />
         <ComponentGroupRef Id="SQLServerScriptComponents" />
@@ -34,7 +33,6 @@
         <ComponentGroupRef Id="ConfigurationSetupUtilityComponents" />
         <ComponentGroupRef Id="GSFDependencyComponents" />
         <ComponentGroupRef Id="MicrosoftDependencyComponents" />
-        <ComponentGroupRef Id="SQLiteDependencyComponents" />
         <ComponentRef Id="makecert"/>
       </Feature>
 
@@ -187,7 +185,6 @@
       <ComponentGroupRef Id="AdapterComponents" />
       <ComponentGroupRef Id="GSFDependencyComponents" />
       <ComponentGroupRef Id="MicrosoftDependencyComponents" />
-      <ComponentGroupRef Id="SQLiteDependencyComponents" />
 
       <!-- Database Scripts -->
       <ComponentGroupRef Id="MySQLScriptComponents" />
@@ -410,6 +407,12 @@
 
     <!-- GSF Dependencies -->
     <ComponentGroup Id="GSFDependencyComponents" Directory="INSTALLFOLDER">
+      <Component Id="Antlr3.Runtime">
+        <File Id="Antlr3.Runtime.dll" Name="Antlr3.Runtime.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Antlr3.Runtime.dll" />
+      </Component>
+      <Component Id="ExpressionEvaluator">
+        <File Id="ExpressionEvaluator.dll" Name="ExpressionEvaluator.dll" Source="$(var.SolutionDir)\Dependencies\GSF\ExpressionEvaluator.dll" />
+      </Component>
       <Component Id="GSF.Communication">
         <File Id="GSF.Communication.dll" Name="GSF.Communication.dll" Source="$(var.SolutionDir)\Dependencies\GSF\GSF.Communication.dll" />
       </Component>
@@ -467,6 +470,9 @@
       <Component Id="GSF.Windows">
         <File Id="GSF.Windows.dll" Name="GSF.Windows.dll" Source="$(var.SolutionDir)\Dependencies\GSF\GSF.Windows.dll" />
       </Component>
+      <Component Id="System.Data.SQLite">
+        <File Id="System.Data.SQLite.dll" Name="System.Data.SQLite.dll" Source="$(var.SolutionDir)\Dependencies\GSF\System.Data.SQLite.dll" />
+      </Component>
     </ComponentGroup>
 
     <!-- Microsoft Dependencies -->
@@ -485,16 +491,6 @@
       </Component>
       <Component Id="WPFToolkit">
         <File Id="WPFToolkit.dll" Name="WPFToolkit.dll" Source="$(var.SolutionDir)\Dependencies\Microsoft\WPF\WPFToolkit.dll" />
-      </Component>
-    </ComponentGroup>
-
-    <!-- SQLite Dependencies -->
-    <ComponentGroup Id="SQLiteDependencyComponents" Directory="INSTALLFOLDER">
-      <Component Id="System.Data.SQLite">
-        <File Id="System.Data.SQLite.dll" Name="System.Data.SQLite.dll" Source="$(var.SolutionDir)\Dependencies\SQLite\System.Data.SQLite.dll" />
-      </Component>
-      <Component Id="System.Data.SQLite.Linq">
-        <File Id="System.Data.SQLite.Linq.dll" Name="System.Data.SQLite.Linq.dll" Source="$(var.SolutionDir)\Dependencies\SQLite\System.Data.SQLite.Linq.dll" />
       </Component>
     </ComponentGroup>
 

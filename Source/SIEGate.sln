@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A594B55D-0C88-4F66-AF6E-86266F933DF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{300F8C7D-35CC-4CFA-A97A-82824E4E59BA}"
@@ -47,14 +49,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLite", "SQLite", "{BE55A3
 		Data\SQLite\sqlite3.exe = Data\SQLite\sqlite3.exe
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLite", "SQLite", "{FCF4FAEF-8AA9-4403-A060-D1CB7DA2145B}"
-	ProjectSection(SolutionItems) = preProject
-		Dependencies\SQLite\System.Data.SQLite.dll = Dependencies\SQLite\System.Data.SQLite.dll
-		Dependencies\SQLite\System.Data.SQLite.Linq.dll = Dependencies\SQLite\System.Data.SQLite.Linq.dll
-		Dependencies\SQLite\System.Data.SQLite.Linq.xml = Dependencies\SQLite\System.Data.SQLite.Linq.xml
-		Dependencies\SQLite\System.Data.SQLite.xml = Dependencies\SQLite\System.Data.SQLite.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft", "Microsoft", "{F87710C5-D8D3-4070-A2EB-73A14FDAE208}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "D3", "D3", "{32FFE65B-1193-4647-A5E6-67504EE51B31}"
@@ -78,18 +72,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{09C79162-276
 		Dependencies\Microsoft\WPF\WPFToolkit.dll = Dependencies\Microsoft\WPF\WPFToolkit.dll
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{7AC71D80-B569-404A-A3B4-1B6E19C96589}"
-	ProjectSection(SolutionItems) = preProject
-		Dependencies\SQLite\x86\System.Data.SQLite.dll = Dependencies\SQLite\x86\System.Data.SQLite.dll
-		Dependencies\SQLite\x86\System.Data.SQLite.Linq.dll = Dependencies\SQLite\x86\System.Data.SQLite.Linq.dll
-		Dependencies\SQLite\x86\System.Data.SQLite.Linq.xml = Dependencies\SQLite\x86\System.Data.SQLite.Linq.xml
-		Dependencies\SQLite\x86\System.Data.SQLite.xml = Dependencies\SQLite\x86\System.Data.SQLite.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GSF", "GSF", "{D0EF145D-C14D-4952-9AA5-8954A91AE7F9}"
 	ProjectSection(SolutionItems) = preProject
 		Dependencies\GSF\AdoAdapters.dll = Dependencies\GSF\AdoAdapters.dll
 		Dependencies\GSF\AdoAdapters.XML = Dependencies\GSF\AdoAdapters.XML
+		Dependencies\GSF\Antlr3.Runtime.dll = Dependencies\GSF\Antlr3.Runtime.dll
 		Dependencies\GSF\CsvAdapters.dll = Dependencies\GSF\CsvAdapters.dll
 		Dependencies\GSF\CsvAdapters.XML = Dependencies\GSF\CsvAdapters.XML
 		Dependencies\GSF\DataQualityMonitoring.dll = Dependencies\GSF\DataQualityMonitoring.dll
@@ -100,6 +87,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GSF", "GSF", "{D0EF145D-C14
 		Dependencies\GSF\DotNetInterface.dll = Dependencies\GSF\DotNetInterface.dll
 		Dependencies\GSF\EpriExport.dll = Dependencies\GSF\EpriExport.dll
 		Dependencies\GSF\EpriExport.XML = Dependencies\GSF\EpriExport.XML
+		Dependencies\GSF\ExpressionEvaluator.dll = Dependencies\GSF\ExpressionEvaluator.dll
 		Dependencies\GSF\FileAdapters.dll = Dependencies\GSF\FileAdapters.dll
 		Dependencies\GSF\FileAdapters.XML = Dependencies\GSF\FileAdapters.XML
 		Dependencies\GSF\GSF.Communication.dll = Dependencies\GSF\GSF.Communication.dll
@@ -159,6 +147,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GSF", "GSF", "{D0EF145D-C14
 		Dependencies\GSF\PhasorProtocolAdapters.XML = Dependencies\GSF\PhasorProtocolAdapters.XML
 		Dependencies\GSF\PowerCalculations.dll = Dependencies\GSF\PowerCalculations.dll
 		Dependencies\GSF\PowerCalculations.XML = Dependencies\GSF\PowerCalculations.XML
+		Dependencies\GSF\System.Data.SQLite.dll = Dependencies\GSF\System.Data.SQLite.dll
+		Dependencies\GSF\System.Data.SQLite.xml = Dependencies\GSF\System.Data.SQLite.xml
 		Dependencies\GSF\TestingAdapters.dll = Dependencies\GSF\TestingAdapters.dll
 		Dependencies\GSF\TestingAdapters.XML = Dependencies\GSF\TestingAdapters.XML
 		Dependencies\GSF\WavInputAdapter.dll = Dependencies\GSF\WavInputAdapter.dll
@@ -181,36 +171,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiX", "WiX", "{E9C94F23-DA4
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs07
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Tools\\ConfigurationSetupUtility\\ConfigurationSetupUtility.csproj
-		SccProjectTopLevelParentUniqueName1 = SIEGate.sln
-		SccProjectName1 = Tools/ConfigurationSetupUtility
-		SccLocalPath1 = Tools\\ConfigurationSetupUtility
-		SccProjectUniqueName2 = Tools\\Setup\\Setup.csproj
-		SccProjectTopLevelParentUniqueName2 = SIEGate.sln
-		SccProjectName2 = Tools/Setup
-		SccLocalPath2 = Tools\\Setup
-		SccProjectUniqueName3 = Applications\\SIEGate\\SIEGate\\SIEGate.csproj
-		SccProjectTopLevelParentUniqueName3 = SIEGate.sln
-		SccProjectName3 = Applications/SIEGate/SIEGate
-		SccLocalPath3 = Applications\\SIEGate\\SIEGate
-		SccProjectUniqueName4 = Applications\\SIEGate\\SIEGateConsole\\SIEGateConsole.csproj
-		SccProjectTopLevelParentUniqueName4 = SIEGate.sln
-		SccProjectName4 = Applications/SIEGate/SIEGateConsole
-		SccLocalPath4 = Applications\\SIEGate\\SIEGateConsole
-		SccProjectUniqueName5 = Applications\\SIEGate\\SIEGateSetup\\SIEGateSetup.wixproj
-		SccProjectTopLevelParentUniqueName5 = SIEGate.sln
-		SccProjectName5 = Applications/SIEGate/SIEGateSetup
-		SccLocalPath5 = Applications\\SIEGate\\SIEGateSetup
-		SccProjectUniqueName6 = Applications\\SIEGateManager\\SIEGateManager.csproj
-		SccProjectTopLevelParentUniqueName6 = SIEGate.sln
-		SccProjectName6 = Applications/SIEGateManager
-		SccLocalPath6 = Applications\\SIEGateManager
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -268,24 +228,22 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{BB1570F0-8947-4B88-8A76-D8A88D3DD6E2} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+		{3DDEA712-A92F-4252-AA36-EC3D20EE70CB} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+		{C1140554-1896-43B3-A109-26B601B38A7E} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+		{7497D95C-1F53-42E5-9678-FC20062B46AF} = {1DBBCC7B-37F1-43D2-B00A-786874D6E7C4}
+		{2A74EACF-8291-47C7-A2ED-0D58771F24E2} = {D5E46AB8-FE9C-44EE-8BF6-85828422D537}
+		{A4C500AC-70AC-4869-8A08-E10CCD45F64F} = {D5E46AB8-FE9C-44EE-8BF6-85828422D537}
+		{BE55A303-AE5A-41D7-8F32-A327C66F5F64} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+		{F87710C5-D8D3-4070-A2EB-73A14FDAE208} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
+		{32FFE65B-1193-4647-A5E6-67504EE51B31} = {F87710C5-D8D3-4070-A2EB-73A14FDAE208}
+		{AFC8E495-1897-4DC7-9C1A-0F81CE079B53} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+		{09C79162-276C-4F8A-BA20-40483821CBD8} = {F87710C5-D8D3-4070-A2EB-73A14FDAE208}
+		{D0EF145D-C14D-4952-9AA5-8954A91AE7F9} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
 		{F6986F10-FC76-475B-A7D0-10315EBF4910} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{018FDA38-8662-4733-A3C8-22EC24A0CE85} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{59671700-02F8-4B9D-B1F7-0CCE4599177E} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{CCF1DF65-C4DA-41CE-9332-0293D33934C5} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
-		{BB1570F0-8947-4B88-8A76-D8A88D3DD6E2} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
-		{3DDEA712-A92F-4252-AA36-EC3D20EE70CB} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
-		{C1140554-1896-43B3-A109-26B601B38A7E} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
-		{BE55A303-AE5A-41D7-8F32-A327C66F5F64} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
-		{AFC8E495-1897-4DC7-9C1A-0F81CE079B53} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
-		{7497D95C-1F53-42E5-9678-FC20062B46AF} = {1DBBCC7B-37F1-43D2-B00A-786874D6E7C4}
-		{FCF4FAEF-8AA9-4403-A060-D1CB7DA2145B} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
-		{F87710C5-D8D3-4070-A2EB-73A14FDAE208} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
-		{D0EF145D-C14D-4952-9AA5-8954A91AE7F9} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
 		{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
-		{2A74EACF-8291-47C7-A2ED-0D58771F24E2} = {D5E46AB8-FE9C-44EE-8BF6-85828422D537}
-		{A4C500AC-70AC-4869-8A08-E10CCD45F64F} = {D5E46AB8-FE9C-44EE-8BF6-85828422D537}
-		{7AC71D80-B569-404A-A3B4-1B6E19C96589} = {FCF4FAEF-8AA9-4403-A060-D1CB7DA2145B}
-		{32FFE65B-1193-4647-A5E6-67504EE51B31} = {F87710C5-D8D3-4070-A2EB-73A14FDAE208}
-		{09C79162-276C-4F8A-BA20-40483821CBD8} = {F87710C5-D8D3-4070-A2EB-73A14FDAE208}
 	EndGlobalSection
 EndGlobal
