@@ -1,9 +1,9 @@
 =========================================================================================================
-==                              NOTICE file for the GPA SIEGate distribution                            ==
+==                             NOTICE file for the GPA SIEGate distribution                            ==
 =========================================================================================================
 
-GPA SIEGate: The Open Source Phasor Gateway (http://siegate.codeplex.com/)
-Copyright © 2010-2011, The Grid Protection Alliance
+GPA SIEGate: The Open Source Phasor Gateway (https://github.com/GridProtectionAlliance/SIEGate)
+Copyright © 2010-2016, The Grid Protection Alliance
 
 This product includes software developed at the
 Grid Protection Alliance (http://www.gridprotectionalliance.org/)
