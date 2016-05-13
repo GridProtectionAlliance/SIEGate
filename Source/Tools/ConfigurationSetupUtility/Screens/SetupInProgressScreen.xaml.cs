@@ -1852,7 +1852,7 @@ namespace ConfigurationSetupUtility.Screens
                     addElement.Attributes.Append(attribute);
 
                     attribute = configFile.CreateAttribute("value");
-                    attribute.Value = "True";
+                    attribute.Value = (m_state["newDatabaseType"].ToString() != "SQLite").ToString();
                     addElement.Attributes.Append(attribute);
 
                     attribute = configFile.CreateAttribute("description");
@@ -1864,6 +1864,10 @@ namespace ConfigurationSetupUtility.Screens
                     addElement.Attributes.Append(attribute);
 
                     errorLoggerNode.AppendChild(addElement);
+                }
+                else if (m_state["newDatabaseType"].ToString() == "SQLite")
+                {
+                    logToDatabaseNode.Attributes["value"].Value = "False";
                 }
             }
 
