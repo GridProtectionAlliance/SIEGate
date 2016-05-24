@@ -20,7 +20,7 @@ Documentation for SIEGate can be found [here](https://github.com/GridProtectionA
 # Deployment
 
 * Make sure your system meets all the requirements
-* Download either the [latest stable release](latest-stable-release) or [nightly build](#nightly-build)
+* Download either the [latest stable release](#latest-stable-release) or [nightly build](#nightly-build)
 * Unzip
 * Start "setup.exe"
 * Follow the wizard
