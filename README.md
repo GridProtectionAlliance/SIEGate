@@ -15,16 +15,16 @@ As shown below, SIEGate provides a security isolation layer between critical int
 SIEGate implements a true publish-subscribe architecture where the sending gateway owner authorizes data as available for subscription by specific consuming gateways. Once authorized, the consuming gateway automatically discovers the data that have been made available to it by other SIEGate nodes and allows the selective subscription to them. SIEGate data available for publication and subscription includes measurements, such as SCADA or synchrophasor data; files, such as SDX files; and higher-level notifications or alarms that are of significance for overall grid operation. These alarms may be configured to promulgate to all interconnected SIEGate nodes so that global alarms can be raised.
 
 # Documentation
-Documentation for SIEGate can be found [here](https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Documentation.md)
+Documentation for SIEGate can be found [here](https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/SIEGate_Documentation.md).
 
 # Deployment
 
-* Make sure your system meets all the requirements
-* Download either the [latest stable release](#latest-stable-release) or [nightly build](#nightly-build)
-* Unzip
-* Start "setup.exe"
-* Follow the wizard
-* Enjoy
+* Make sure your system meets all the [requirements](#requirements) below.
+* Choose a [download](#downloads) option below.
+* Unzip if necessary.
+* Run "setup.exe".
+* Follow the wizard.
+* Enjoy.
 
 ## Requirements
 
@@ -38,18 +38,16 @@ Database management system such as:
 * SQL Server
 * Oracle
 * MySQL
-* SQLite
+* SQLite (Recommended) - included.
 
-## Latest Stable Release
-Download the latest stable release [here.](http://siegate.codeplex.com/downloads/get/859784)
-
-## Nightly Build
-Download the nightly build [here.](http://www.gridprotectionalliance.org/nightlybuilds/SIEGate/Beta/SIEGate.Installs.zip)
+## Downloads
+* Download the latest stable release [here.](http://siegate.codeplex.com/downloads/get/859784)
+* Download the nightly build [here.](http://www.gridprotectionalliance.org/nightlybuilds/SIEGate/Beta/SIEGate.Installs.zip)
 
 # How to Contribute
 If you would like to contribute please:
 
-1. Read the [styleguide](https://www.gridprotectionalliance.org/docs/GPA_Coding_Guidelines_2011_03.pdf)
+1. Read our [styleguide](https://www.gridprotectionalliance.org/docs/GPA_Coding_Guidelines_2011_03.pdf)
 * Fork the github repository
 * Work your magic
 * Make a pull request
