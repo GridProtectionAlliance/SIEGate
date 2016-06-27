@@ -1,4 +1,4 @@
-![SIEGate](http://www.gridprotectionalliance.org/images/products/SIEGate.png)
+![Icon](http://www.gridprotectionalliance.org/images/products/icons%2064/SIEGate.png)![SIEGate](http://www.gridprotectionalliance.org/images/products/SIEGate.png)
 # SIEGate
 Secure Information Exchange Gateway
 
