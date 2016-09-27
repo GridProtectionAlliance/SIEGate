@@ -97,7 +97,7 @@
 
     <Property Id="SERVICENAME" Value="$(var.SIEGate.TargetName)" />
     <Property Id="SERVICEPASSWORD" Hidden="yes" />
-    <Property Id="HTTPSERVICEPORTS" Value="6053,6054,6153,6154,5019" />
+    <Property Id="HTTPSERVICEPORTS" Value="6053,6054,6153,6154,6354,6454,5019" />
     <Property Id="COMPANYNAME" Value="Grid Protection Alliance" />
     <Property Id="COMPANYACRONYM" Value="GPA" />
     <SetProperty Id="SERVICEACCOUNT" Value="NT SERVICE\[SERVICENAME]" After="LaunchConditions" Sequence="first" />
@@ -383,6 +383,9 @@
       </Component>
       <Component Id="FileAdapters">
         <File Id="FileAdapters.dll" Name="FileAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\FileAdapters.dll" />
+      </Component>
+      <Component Id="GrafanaAdapters">
+        <File Id="GrafanaAdapters.dll" Name="GrafanaAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\GrafanaAdapters.dll" />
       </Component>
       <Component Id="Hadoop.Replication">
         <File Id="Hadoop.Replication.dll" Name="Hadoop.Replication.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Hadoop.Replication.dll" />

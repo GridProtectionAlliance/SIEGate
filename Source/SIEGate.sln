@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A594B55D-0C88-4F66-AF6E-86266F933DF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{300F8C7D-35CC-4CFA-A97A-82824E4E59BA}"
+	ProjectSection(SolutionItems) = preProject
+		Data\DatabaseUpdateReadme.txt = Data\DatabaseUpdateReadme.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MySQL", "MySQL", "{3DDEA712-A92F-4252-AA36-EC3D20EE70CB}"
 	ProjectSection(SolutionItems) = preProject
@@ -164,6 +167,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiX", "WiX", "{E9C94F23-DA4
 		Dependencies\WiX\WixUtilExtension.dll = Dependencies\WiX\WixUtilExtension.dll
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostgreSQL", "PostgreSQL", "{20C5EFE4-6DFC-4692-B8CA-7D0EF8070CA9}"
+	ProjectSection(SolutionItems) = preProject
+		Data\PostgreSQL\InitialDataSet.sql = Data\PostgreSQL\InitialDataSet.sql
+		Data\PostgreSQL\SampleDataSet.sql = Data\PostgreSQL\SampleDataSet.sql
+		Data\PostgreSQL\SIEGate.sql = Data\PostgreSQL\SIEGate.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,5 +247,6 @@ Global
 		{59671700-02F8-4B9D-B1F7-0CCE4599177E} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{CCF1DF65-C4DA-41CE-9332-0293D33934C5} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
+		{20C5EFE4-6DFC-4692-B8CA-7D0EF8070CA9} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
 	EndGlobalSection
 EndGlobal
