@@ -48,8 +48,8 @@ SIEGate has been designed for implementation on standard, high-availability hard
 \* Not recommended for large deployments.
 
 ## Downloads
-* Download the latest stable release [here.](http://siegate.codeplex.com/downloads/get/859784)
-* Download the nightly build [here.](http://www.gridprotectionalliance.org/nightlybuilds/SIEGate/Beta/SIEGate.Installs.zip)
+* Download the latest stable release [here](https://github.com/GridProtectionAlliance/SIEGate/releases).
+* Download the nightly build [here](http://www.gridprotectionalliance.org/nightlybuilds/SIEGate/Beta/SIEGate.Installs.zip).
 
 # How to Contribute
 If you would like to contribute please:
