@@ -21,10 +21,10 @@ SIEGate implements a true publish-subscribe architecture where the sending gatew
 
 # Deployment
 
-* Make sure your system meets all the [requirements](#requirements) below.
-* Choose a [download](#downloads) option below.
+1. Make sure your system meets all the [requirements](#requirements) below.
+* Choose a [download](#downloads) below.
 * Unzip if necessary.
-* Run "setup.exe".
+* Run SIEGateSetup.msi.
 * Follow the wizard.
 * Enjoy.
 
@@ -36,11 +36,16 @@ SIEGate has been designed for implementation on standard, high-availability hard
 
 ### Software Requirements
 
-Database management system such as:
-* SQL Server
-* Oracle
-* MySQL
-* SQLite (Recommended) - included.
+* .NET 4.6 or higher.
+* 64-bit Windows 7 or newer.
+* Database management system such as:
+  * SQL Server (Express version is fine)
+  * MySQL
+  * Oracle
+  * PostgreSQL
+  * SQLite\* (included, no extra install required)
+  
+\* Not recommended for large deployments.
 
 ## Downloads
 * Download the latest stable release [here.](http://siegate.codeplex.com/downloads/get/859784)
