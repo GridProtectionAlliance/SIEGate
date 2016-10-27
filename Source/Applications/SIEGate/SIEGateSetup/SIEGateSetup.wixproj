@@ -95,6 +95,7 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Log Viewer.exe" />
     <Content Include="makecert.exe" />
     <Content Include="NoInetFixUtil.exe" />
     <Content Include="README.txt">
@@ -114,7 +115,7 @@
       <CopyFiles Include="README.txt" />
     </ItemGroup>
     <Copy SourceFiles="@(CopyFiles)" DestinationFolder="$(OutDir)" />
-    <CallTarget Targets="SignBuild"/>
+    <CallTarget Targets="SignBuild" />
   </Target>
   <Target Name="SignBuild" Condition="'$(SIGNTOOL)' != ''">
     <PropertyGroup>
