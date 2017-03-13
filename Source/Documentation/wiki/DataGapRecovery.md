@@ -90,6 +90,28 @@ to use the following settings:
 Once the form is complete, check `Enabled`, click `Save` and `Initialize`.
 You may also need to restart the SIEGate service.
 
+## Setting Measurements to be Archived
+
+Finally, each measurment you wish to enable recovery for must have it's historian set to PPA.  
+This can be done from the database for all measurements, or from the SIEGate Manager measurment page for individual measurments.
+
+```sql
+-- sample sql to set all measurements to be archived
+
+-- Get the ID of the newly created historian instance
+SELECT ID from Historian WHERE Acronym = 'PPA'; 
+
+-- Update all measurments to use the ID of the new historian, 2 in this example.
+UPDATE [SIEGate].[dbo].[Measurement]
+SET [HistorianID] = 2
+WHERE [PointID] in
+(SELECT meas.PointID FROM [SIEGate].[dbo].[Measurement] meas
+LEFT OUTER JOIN
+[SIEGate].[dbo].[SignalType] sig ON meas.[SignalTypeID] = sig.[ID]
+WHERE sig.[Acronym] != 'STAT');
+
+```
+
 ## Enabling Data Recovery on openHistorian
 
 On the openHistorian subscription side, you can enable data recovery when establishing
