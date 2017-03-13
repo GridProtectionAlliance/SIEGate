@@ -36,7 +36,7 @@ namespace ConfigurationSetupUtility.Screens
         #region [ Members ]
 
         // Fields
-        private IScreen m_nextScreen;
+        private readonly IScreen m_nextScreen;
         private Dictionary<string, object> m_state;
 
         #endregion
@@ -129,6 +129,9 @@ namespace ConfigurationSetupUtility.Screens
 
                 if (!m_state.ContainsKey("existing"))
                     m_state.Add("existing", false);
+
+                if (m_state.ContainsKey("updateConfiguration"))
+                    m_state.Remove("updateConfiguration");
             }
         }
 
