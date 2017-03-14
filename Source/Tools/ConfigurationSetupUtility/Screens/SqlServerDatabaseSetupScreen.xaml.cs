@@ -26,8 +26,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -47,7 +50,7 @@ namespace ConfigurationSetupUtility.Screens
         #region [ Members ]
 
         // Fields
-        private SqlServerSetup m_sqlServerSetup;
+        private readonly SqlServerSetup m_sqlServerSetup;
         private Dictionary<string, object> m_state;
         private Button m_advancedButton;
 
@@ -324,9 +327,14 @@ namespace ConfigurationSetupUtility.Screens
                 m_databaseNameTextBox.Text = migrate ? "SIEGate" + App.DatabaseVersionSuffix : "SIEGate";
 
                 // When using an existing database as-is, read existing connection settings out of the configuration file
-                if (existing && !migrate)
+                string configFile = FilePath.GetAbsolutePath(App.ApplicationConfig);
+
+                if (!File.Exists(configFile))
+                    configFile = FilePath.GetAbsolutePath(App.ManagerConfig);
+
+                if (existing && !migrate && File.Exists(configFile))
                 {
-                    serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+                    serviceConfig = XDocument.Load(configFile);
 
                     connectionString = serviceConfig
                         .Descendants("systemSettings")
