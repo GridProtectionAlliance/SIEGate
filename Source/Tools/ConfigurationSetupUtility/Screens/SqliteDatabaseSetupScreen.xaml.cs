@@ -273,9 +273,14 @@ namespace ConfigurationSetupUtility.Screens
                 m_state.Add("sqliteDatabaseFilePath", m_sqliteDatabaseFilePathTextBox.Text);
 
             // When using an existing database as-is, read existing connection settings out of the configuration file
-            if (existing && !migrate)
+            string configFile = FilePath.GetAbsolutePath(App.ApplicationConfig);
+
+            if (!File.Exists(configFile))
+                configFile = FilePath.GetAbsolutePath(App.ManagerConfig);
+
+            if (existing && !migrate && File.Exists(configFile))
             {
-                serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+                serviceConfig = XDocument.Load(configFile);
 
                 connectionString = serviceConfig
                     .Descendants("systemSettings")

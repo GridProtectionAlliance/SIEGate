@@ -31,9 +31,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -51,10 +53,10 @@ namespace ConfigurationSetupUtility.Screens
         #region [ Members ]
 
         // Fields
-        private MySqlSetup m_mySqlSetup;
+        private readonly MySqlSetup m_mySqlSetup;
         private Dictionary<string, object> m_state;
         private Button m_advancedButton;
-        private string m_dataProviderString;
+        private readonly string m_dataProviderString;
 
         #endregion
 
@@ -104,7 +106,7 @@ namespace ConfigurationSetupUtility.Screens
             }
 
             if (string.IsNullOrEmpty(m_dataProviderString))
-                m_dataProviderString = "AssemblyName={MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d}; ConnectionType=MySql.Data.MySqlClient.MySqlConnection; AdapterType=MySql.Data.MySqlClient.MySqlDataAdapter";
+                m_dataProviderString = "AssemblyName={MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d}; ConnectionType=MySql.Data.MySqlClient.MySqlConnection; AdapterType=MySql.Data.MySqlClient.MySqlDataAdapter";
 
             m_mySqlSetup.DataProviderString = m_dataProviderString;
         }
@@ -339,9 +341,14 @@ namespace ConfigurationSetupUtility.Screens
                 m_databaseNameTextBox.Text = migrate ? "SIEGate" + App.DatabaseVersionSuffix : "SIEGate";
 
                 // When using an existing database as-is, read existing connection settings out of the configuration file
-                if (existing && !migrate)
+                string configFile = FilePath.GetAbsolutePath(App.ApplicationConfig); //"SIEGate.exe.config"
+
+                if (!File.Exists(configFile))
+                    configFile = FilePath.GetAbsolutePath(App.ManagerConfig); //"SIEGateManager.exe.config"
+
+                if (existing && !migrate && File.Exists(configFile))
                 {
-                    serviceConfig = XDocument.Load(FilePath.GetAbsolutePath(App.ApplicationConfig));
+                    serviceConfig = XDocument.Load(configFile);
 
                     connectionString = serviceConfig
                         .Descendants("systemSettings")
@@ -428,6 +435,17 @@ namespace ConfigurationSetupUtility.Screens
         private void DatabaseNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             m_mySqlSetup.DatabaseName = m_databaseNameTextBox.Text;
+        }
+
+        // Removes invalid characters from database name
+        private void DatabaseNameTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            bool existing = Convert.ToBoolean(m_state["existing"]);
+            bool correctDatabaseName = !(existing && !Convert.ToBoolean(m_state["updateConfiguration"]));
+            if (correctDatabaseName)
+            {
+                m_databaseNameTextBox.Text = Regex.Replace(m_databaseNameTextBox.Text, @"[\W]", "");
+            }
         }
 
         // Occurs when the user changes the administrator user name.

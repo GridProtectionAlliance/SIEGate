@@ -296,6 +296,7 @@ namespace ConfigurationSetupUtility.Screens
                 m_newUserNameTextBox.Visibility = newUserVisibility;
                 m_newUserPasswordTextBox.Visibility = newUserVisibility;
                 m_sqlServerDatabaseInstructionTextBlock.Text = (!existing || migrate) ? newDatabaseMessage : oldDatabaseMessage;
+                //m_checkBoxIntegratedSecurity.IsChecked = true;
 
                 // If connecting to existing database, user name and password need not be admin user:
                 if (existing && !migrate)
@@ -404,6 +405,17 @@ namespace ConfigurationSetupUtility.Screens
         private void DatabaseNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             m_sqlServerSetup.DatabaseName = m_databaseNameTextBox.Text;
+        }
+
+        // Removes invalid characters from database name
+        private void DatabaseNameTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            bool existing = Convert.ToBoolean(m_state["existing"]);
+            bool correctDatabaseName = !(existing && !Convert.ToBoolean(m_state["updateConfiguration"]));
+            if (correctDatabaseName)
+            {
+                m_databaseNameTextBox.Text = Regex.Replace(m_databaseNameTextBox.Text, @"[\W]", "");
+            }
         }
 
         // Occurs when the user changes the administrator user name.
