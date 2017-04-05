@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -33,6 +32,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Xml;
 using GSF;
+using GSF.Configuration;
 
 namespace ConfigurationSetupUtility.Screens
 {
@@ -359,23 +359,19 @@ namespace ConfigurationSetupUtility.Screens
         {
             IDbConnection connection = null;
             string configFileName = Directory.GetCurrentDirectory() + "\\" + App.ApplicationConfig;
-            XmlDocument doc = new XmlDocument();
-            IEnumerable<XmlNode> systemSettings;
-            XmlNode connectionNode, dataProviderNode;
+
+            ConfigurationFile configFile;
+            string connectionString;
+            string dataProviderString;
 
             try
             {
-                doc.Load(configFileName);
-                systemSettings = doc.SelectNodes("configuration/categorizedSettings/systemSettings/add").Cast<XmlNode>();
-                connectionNode = systemSettings.SingleOrDefault(node => node.Attributes != null && node.Attributes["name"].Value == "ConnectionString");
-                dataProviderNode = systemSettings.SingleOrDefault(node => node.Attributes != null && node.Attributes["name"].Value == "DataProviderString");
+                configFile = ConfigurationFile.Open(configFileName);
+                connectionString = configFile.Settings["systemSettings"]["ConnectionString"]?.Value;
+                dataProviderString = configFile.Settings["systemSettings"]["DataProviderString"]?.Value;
 
-                if (connectionNode != null && dataProviderNode != null)
-                {
-                    string connectionString = connectionNode.Attributes["value"].Value;
-                    string dataProviderString = dataProviderNode.Attributes["value"].Value;
+                if ((object)connectionString != null && (object)dataProviderString != null)
                     connection = GetConnection(connectionString, dataProviderString);
-                }
             }
             catch
             {
