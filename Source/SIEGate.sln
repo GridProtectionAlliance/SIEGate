@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A594B55D-0C88-4F66-AF6E-86266F933DF0}"
 EndProject
@@ -172,6 +172,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostgreSQL", "PostgreSQL", 
 		Data\PostgreSQL\SIEGate.sql = Data\PostgreSQL\SIEGate.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9E98278-2F3B-4514-B506-33C566DB87D2}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		LICENSE.txt = LICENSE.txt
+		..\README.md = ..\README.md
+		..\Build\Scripts\SIEGate.version = ..\Build\Scripts\SIEGate.version
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,5 +245,8 @@ Global
 		{CCF1DF65-C4DA-41CE-9332-0293D33934C5} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
 		{20C5EFE4-6DFC-4692-B8CA-7D0EF8070CA9} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32128343-E512-462E-884A-97FEB9AE17FD}
 	EndGlobalSection
 EndGlobal
