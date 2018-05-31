@@ -297,11 +297,11 @@ namespace SIEGateManager
             bool useLocalHelp = false;
             try
             {
-                //Check for the Internet Connectivity.
-                Dns.GetHostEntry("siegate.codeplex.com");
+                // Check for the Internet Connectivity.
+                Dns.GetHostEntry("siegate.com");
 
-                //Launch the help page avilable on web.
-                Process.Start("http://siegate.codeplex.com/wikipage?title=SIEGate%20How-To&referringTitle=Documentation");
+                // Launch the help page available on web.
+                Process.Start("https://github.com/GridProtectionAlliance/SIEGate/wiki");
             }
             catch
             {
