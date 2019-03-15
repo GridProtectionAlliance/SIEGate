@@ -445,6 +445,9 @@
       <Component Id="TestingAdapters">
         <File Id="TestingAdapters.dll" Name="TestingAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\TestingAdapters.dll" />
       </Component>
+      <Component Id="sttp.net">
+        <File Id="sttp.net.dll" Name="sttp.net.dll" Source="$(var.SolutionDir)Dependencies\GSF\sttp.net.dll" />
+      </Component>
     </ComponentGroup>
 
     <!-- GSF Dependencies -->
