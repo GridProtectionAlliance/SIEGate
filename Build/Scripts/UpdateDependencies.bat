@@ -34,7 +34,7 @@ IF "%replace%" == "" SET replace=\\GPAWEB\NightlyBuilds\Tools\ReplaceInFiles\Rep
 SET defaulttarget=%LOCALAPPDATA%\Temp\SIEGate
 IF "%remote%" == "" SET remote=git@github.com:GridProtectionAlliance/SIEGate.git
 IF "%source%" == "" SET source=\\GPAWEB\NightlyBuilds\GridSolutionsFramework\Beta
-IF "%sttp%" == "" SET source=\\GPAWEB\NightlyBuilds\sttp.net\Beta
+IF "%sttp%" == "" SET sttp=\\GPAWEB\NightlyBuilds\sttp.net\Beta
 IF "%target%" == "" SET target=%defaulttarget%
 
 SET libraries=%source%\Libraries\*.*
