@@ -445,9 +445,6 @@
       <Component Id="TestingAdapters">
         <File Id="TestingAdapters.dll" Name="TestingAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\TestingAdapters.dll" />
       </Component>
-      <Component Id="sttp.net">
-        <File Id="sttp.net.dll" Name="sttp.net.dll" Source="$(var.SolutionDir)Dependencies\GSF\sttp.net.dll" />
-      </Component>
     </ComponentGroup>
 
     <!-- GSF Dependencies -->
@@ -523,6 +520,9 @@
       </Component>
       <Component Id="Newtonsoft.Json">
         <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.SolutionDir)Dependencies\GSF\Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="sttp.gsf">
+        <File Id="sttp.gsf.dll" Name="sttp.gsf.dll" Source="$(var.SolutionDir)\Dependencies\GSF\sttp.gsf.dll" />
       </Component>
     </ComponentGroup>
 
