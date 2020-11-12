@@ -318,7 +318,9 @@
     <!-- SIEGate Manager -->
     <ComponentGroup Id="SIEGateManagerComponents" Directory="INSTALLFOLDER">
       <Component Id="SIEGateManager">
-        <File Id="SIEGateManager.exe" Name="$(var.SIEGateManager.TargetFileName)" Source="$(var.SIEGateManager.TargetPath)" />
+        <File Id="SIEGateManager.exe" Name="$(var.SIEGateManager.TargetFileName)" Source="$(var.SIEGateManager.TargetPath)" >
+          <netfx:NativeImage Id="ngen_SIEGateManager.exe" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
         <Shortcut Id="SIEGateManagerStartMenuShortcut" Name="SIEGate Manager" Icon="SIEGateManager.ico.exe" Description="Manager application for the SIEGate service." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
       </Component>
       <Component Id="SIEGateManagerConfig">
