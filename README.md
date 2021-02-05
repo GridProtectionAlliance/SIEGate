@@ -2,6 +2,8 @@
 # SIEGate
 Secure Information Exchange Gateway
 
+![CodeQL](https://github.com/GridProtectionAlliance/SIEGate/workflows/CodeQL/badge.svg)
+
 The objectives of the SIEGate (the Secure Information Exchange Gateway pronounced Psy-gate) project are (1) to improve the security posture and minimize the external cyber-attack surface of electric utility control centers, and (2) to reduce the cost of maintaining current control-room-to-control-room information exchange.
 
 Funded by the U.S. Department of Energy, the project team includes the Grid Protection Alliance (GPA) as the project prime and principal software developer, with the University of Illinois at Urbana-Champaign (Illinois) as a research, design, development, and testing partner; the Pacific Northwest National Laboratory (PNNL) as a design review, testing, and evaluation partner; PJM as a demonstration partner; and Alstom Grid as a demonstration and commercialization partner. Work on SIEGate began in 2010 with the initial version published 2013.
