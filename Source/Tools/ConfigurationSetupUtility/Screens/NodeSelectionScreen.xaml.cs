@@ -50,6 +50,7 @@ namespace ConfigurationSetupUtility.Screens
         {
             public string Name { get; set; }
             public string Company { get; set; }
+            public string Company { get; set; }
             public string Description { get; set; }
             public Guid Id { get; set; }
         }
@@ -177,7 +178,7 @@ namespace ConfigurationSetupUtility.Screens
             IDbConnection connection;
 
             Guid nodeId;
-            NodeInfo defaultSelection;
+            //NodeInfo defaultSelection;
             int defaultIndex;
 
             bool applyChangesToService;
