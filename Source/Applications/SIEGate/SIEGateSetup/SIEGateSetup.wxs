@@ -323,7 +323,7 @@
         </File>
         <Shortcut Id="SIEGateManagerStartMenuShortcut" Name="SIEGate Manager" Icon="SIEGateManager.ico.exe" Description="Manager application for the SIEGate service." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
       </Component>
-      <Component Id="SIEGateManagerConfig">
+      <Component Id="SIEGateManagerConfig" Permanent="yes">
         <File Id="SIEGateManager.exe.config" Name="$(var.SIEGateManager.TargetFileName).config" Source="$(var.SIEGateManager.TargetPath).config" />
       </Component>
       <Component Id="SIEGateManagerMenu">
