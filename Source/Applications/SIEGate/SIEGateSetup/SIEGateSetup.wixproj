@@ -86,6 +86,8 @@
     <Content Include="AdapterExplorer.exe.config" />
     <Content Include="APPPDCImporter.exe" />
     <Content Include="APPPDCImporter.exe.config" />
+    <Content Include="BulkCalculationState.exe" />
+    <Content Include="BulkCalculationState.exe.config" />
     <Content Include="ConfigCrypter.exe" />
     <Content Include="ConfigCrypter.exe.config" />
     <Content Include="ConfigurationEditor.exe" />
