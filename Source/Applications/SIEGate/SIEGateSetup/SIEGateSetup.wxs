@@ -83,6 +83,9 @@
         <Feature Id="UpdateTagNamesFeature" Title="Update Tag Names Tool">
           <ComponentGroupRef Id="UpdateTagNamesComponents" />
         </Feature>
+        <Feature Id="eDNAComponents" Title="eDNA Historian Components">
+          <ComponentGroupRef Id="eDNAComponents" />
+        </Feature>
         
         <ComponentGroupRef Id="GSFDependencyComponents" />
       </Feature>
@@ -402,6 +405,7 @@
       <ComponentGroupRef Id="LogFileViewerComponents" />
       <ComponentGroupRef Id="GEPDataExtractorComponents" />
       <ComponentGroupRef Id="UpdateTagNamesComponents" />
+      <ComponentGroupRef Id="eDNAComponents" />
 
       <Component Id="NoInetFixUtil">
         <File Id="NoInetFixUtil.exe" Name="NoInetFixUtil.exe" Source="$(var.ProjectDir)\NoInetFixUtil.exe">
@@ -530,6 +534,36 @@
         <File Id="UpdateTagNames.exe.config" Name="UpdateTagNames.exe.config" Source="$(var.ProjectDir)\UpdateTagNames.exe.config" />
       </Component>
     </ComponentGroup>
+
+    <ComponentGroup Id="eDNAComponents" Directory="INSTALLFOLDER">
+      <Component Id="eDNAAdapters">
+        <!-- eDNA Historian Adapters -->
+        <File Id="eDNAAdapters.dll" Name="eDNAAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\eDNAAdapters.dll">
+          <netfx:NativeImage Id="ngen_eDNAAdapters.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
+      </Component>
+      <Component Id="EzDnaApi64">
+        <File Id="EzDnaApi64.dll" Name="EzDnaApi64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDnaApi64.dll" />
+      </Component>
+      <Component Id="EzDNAApiNet64">
+        <File Id="EzDNAApiNet64.dll" Name="EzDNAApiNet64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAApiNet64.dll">
+          <netfx:NativeImage Id="ngen_EzDNAApiNet64.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
+      </Component>
+      <Component Id="EzDNAApiNetSecure64">
+        <File Id="EzDNAApiNetSecure64.dll" Name="EzDNAApiNetSecure64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAApiNetSecure64.dll">
+          <netfx:NativeImage Id="ngen_EzDNAApiNetSecure.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
+      </Component>
+      <Component Id="EZDnaServApi64">
+        <File Id="EZDnaServApi64.dll" Name="EZDnaServApi64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EZDnaServApi64.dll" />
+      </Component>
+      <Component Id="EzDNAServApiNet64">
+        <File Id="EzDNAServApiNet64.dll" Name="EzDNAServApiNet64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAServApiNet64.dll">
+          <netfx:NativeImage Id="ngen_ExDNAServApiNet64.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
+      </Component>
+    </ComponentGroup>
     
     <!-- Adapters -->
     <ComponentGroup Id="AdapterComponents" Directory="INSTALLFOLDER">
@@ -644,33 +678,6 @@
       <Component Id="TestingAdapters">
         <File Id="TestingAdapters.dll" Name="TestingAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\TestingAdapters.dll">
           <netfx:NativeImage Id="ngen_TestingAdapters.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-        </File>
-      </Component>
-      <Component Id="eDNAAdapters">
-        <!-- eDNA Historian Adapters -->
-        <File Id="eDNAAdapters.dll" Name="eDNAAdapters.dll" Source="$(var.SolutionDir)\Dependencies\GSF\eDNAAdapters.dll">
-          <netfx:NativeImage Id="ngen_eDNAAdapters.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-        </File>
-      </Component>
-      <Component Id="EzDnaApi64">
-        <File Id="EzDnaApi64.dll" Name="EzDnaApi64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDnaApi64.dll" />
-      </Component>
-      <Component Id="EzDNAApiNet64">
-        <File Id="EzDNAApiNet64.dll" Name="EzDNAApiNet64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAApiNet64.dll">
-          <netfx:NativeImage Id="ngen_EzDNAApiNet64.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-        </File>
-      </Component>
-      <Component Id="EzDNAApiNetSecure64">
-        <File Id="EzDNAApiNetSecure64.dll" Name="EzDNAApiNetSecure64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAApiNetSecure64.dll">
-          <netfx:NativeImage Id="ngen_EzDNAApiNetSecure.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-        </File>
-      </Component>
-      <Component Id="EZDnaServApi64">
-        <File Id="EZDnaServApi64.dll" Name="EZDnaServApi64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EZDnaServApi64.dll" />
-      </Component>
-      <Component Id="EzDNAServApiNet64">
-        <File Id="EzDNAServApiNet64.dll" Name="EzDNAServApiNet64.dll" Source="$(var.SolutionDir)\Dependencies\GSF\EzDNAServApiNet64.dll">
-          <netfx:NativeImage Id="ngen_ExDNAServApiNet64.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
         </File>
       </Component>
       <Component Id="NModbus4">
