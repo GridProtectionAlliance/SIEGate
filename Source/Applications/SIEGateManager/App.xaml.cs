@@ -42,6 +42,9 @@ using GSF.TimeSeries.UI;
 using SIEGateManager.Properties;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
+using System.Diagnostics.Contracts;
+using GSF.Diagnostics;
+using SIEGateManager.Properties;
 
 // ReSharper disable RedundantExtendsListEntry
 // ReSharper disable ConstantConditionalAccessQualifier
@@ -59,7 +62,6 @@ namespace SIEGateManager
 
         // Fields
         private Guid m_nodeID;
-        private readonly ErrorLogger m_errorLogger;
         private readonly Func<string> m_defaultErrorText;
 
         #endregion
@@ -74,7 +76,7 @@ namespace SIEGateManager
             string systemName = null;
 
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
-            Application.Current.SessionEnding += Application_SessionEnding;
+            Current.SessionEnding += Application_SessionEnding;
 
             try
             {
@@ -173,10 +175,9 @@ namespace SIEGateManager
                 // If this fails, it's not a huge deal
             }
 
-            m_errorLogger = new ErrorLogger
+            ErrorLogger = new ErrorLogger
             {
-                ErrorTextMethod = ErrorText, 
-                ExitOnUnhandledException = false, 
+                ExitOnUnhandledException = false,
                 HandleUnhandledException = true, 
                 LogToEmail = false, 
                 LogToEventLog = true, 
@@ -185,9 +186,11 @@ namespace SIEGateManager
                 LogToUI = true
             };
 
-            m_errorLogger.Initialize();
+            m_defaultErrorText = ErrorLogger.ErrorTextMethod;
+            ErrorLogger.ErrorTextMethod = ErrorText;
 
-            m_defaultErrorText = m_errorLogger.ErrorTextMethod;
+            ErrorLogger.Initialize();
+
 
             Title = AssemblyInfo.EntryAssembly.Title;
 
@@ -212,7 +215,7 @@ namespace SIEGateManager
 
                     if (elevateProcess)
                     {
-                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        ProcessStartInfo startInfo = new()
                         {
                             FileName = Environment.GetCommandLineArgs()[0],
                             Arguments = $"{string.Join(" ", Environment.GetCommandLineArgs().Skip(1))} -elevated",
@@ -229,12 +232,7 @@ namespace SIEGateManager
             }
             catch (Exception ex)
             {
-                // First attempt to display a modal dialog will fail to block this
-                // thread -- modal dialog displayed by the error logger will block now
-                MessageBox.Show(ex.Message);
-
-                // Log and display error, then exit application - manager must connect to database to continue
-                m_errorLogger.Log(new InvalidOperationException($"{Title} cannot connect to database: {ex.Message}", ex), true);
+                LoadException = new InvalidOperationException($"{Title} cannot connect to database: {ex.Message}", ex);
             }
             finally
             {
@@ -248,17 +246,12 @@ namespace SIEGateManager
                 CategorizedSettingsElementCollection systemSettings = ConfigurationFile.Current.Settings["systemSettings"];
                 CategorizedSettingsElement mirrorModeSetting = systemSettings["MirrorMode"];
 
-                if (!(mirrorModeSetting is null))
+                if (mirrorModeSetting is not null)
                     mirrorMode = mirrorModeSetting.ValueAsBoolean();
             }
             catch (Exception ex)
             {
-                // First attempt to display a modal dialog will fail to block this
-                // thread -- modal dialog displayed by the error logger will block now
-                MessageBox.Show(ex.Message);
-
-                // Log and display error, but continue on - if manager fails to load MirrorMode from the config file, it can just fall back on the default
-                m_errorLogger.Log(new InvalidOperationException($"{Title} cannot access mirror mode setting in configuration file - defaulting to true: {ex.Message}", ex));
+                Logger.SwallowException(new InvalidOperationException($"{Title} cannot access mirror mode setting in configuration file - defaulting to true: {ex.Message}", ex));
             }
 
             IsolatedStorageManager.WriteToIsolatedStorage("MirrorMode", mirrorMode);
@@ -286,15 +279,26 @@ namespace SIEGateManager
         /// </summary>
         public string Title { get; }
 
+        /// <summary>
+        /// Gets the <see cref="ErrorLogger"/> for the application.
+        /// </summary>
+        public ErrorLogger ErrorLogger { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Exception"/> that was thrown during the load process.
+        /// </summary>
+        public Exception LoadException { get; private set; }
+
         #endregion
 
         #region [ Methods ]
 
-        private static void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+        private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             try
             {
                 Settings.Default.Save();
+                ConfigurationFile.Current.Save();
             }
             catch (Exception ex)
             {
@@ -304,16 +308,25 @@ namespace SIEGateManager
 
         private string ErrorText()
         {
-            string errorMessage = m_defaultErrorText();
-            Exception ex = m_errorLogger.LastException;
+            string errorMessage;
 
-            if (ex != null)
+            if (LoadException is not null)
             {
-                if (string.Compare(ex.Message, "UnhandledException", StringComparison.OrdinalIgnoreCase) == 0 && ex.InnerException != null)
-                    ex = ex.InnerException;
-
-                errorMessage = $"{errorMessage}\r\n\r\nError details: {ex.Message}";
+                errorMessage = LoadException.Message;
+                LoadException = null;
+                return errorMessage;
             }
+
+            errorMessage = m_defaultErrorText();
+            Exception ex = ErrorLogger.LastException;
+
+            if (ex is null)
+                return errorMessage;
+
+            if (string.Compare(ex.Message, "UnhandledException", StringComparison.OrdinalIgnoreCase) == 0 && ex.InnerException is not null)
+                ex = ex.InnerException;
+
+            errorMessage = $"{errorMessage}\r\n\r\nError details: {ex.Message}";
 
             return errorMessage;
         }

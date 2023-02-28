@@ -36,7 +36,7 @@ using GSF.TimeSeries.UI.DataModels;
 using GSF.Configuration;
 using GSF.IO;
 using GSF.Reflection;
-using GSF.Security;
+using GSF.ErrorManagement;
 
 namespace SIEGateManager
 {
@@ -51,7 +51,7 @@ namespace SIEGateManager
         private ObservableCollection<MenuDataItem> m_menuDataItems;
         private WindowsServiceClient m_windowsServiceClient;
         private AlarmMonitor m_alarmMonitor;
-        private string m_defaultNodeID;
+        private readonly string m_defaultNodeID;
 
         #endregion
 
@@ -60,13 +60,7 @@ namespace SIEGateManager
         /// <summary>
         /// Gets <see cref="ObservableCollection{T}"/> type collection of <see cref="MenuDataItem"/>.
         /// </summary>
-        public ObservableCollection<MenuDataItem> MenuDataItems
-        {
-            get
-            {
-                return m_menuDataItems;
-            }
-        }
+        public ObservableCollection<MenuDataItem> MenuDataItems => m_menuDataItems;
 
         #endregion
 
@@ -85,9 +79,18 @@ namespace SIEGateManager
             //#endif
 
             InitializeComponent();
+
+            App app = ((App)Application.Current);
+
+            if (app.LoadException is not null)
+            {
+                app.ErrorLogger?.Log(app.LoadException, true);
+                return;
+            }
+
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
-            Title = ((App)Application.Current).Title;
+            Title = app.Title;
             TextBoxTitle.Text = AssemblyInfo.EntryAssembly.Title;
 
             CommonFunctions.CurrentPrincipal = SecurityPrincipal;
@@ -96,7 +99,7 @@ namespace SIEGateManager
             ConfigurationFile configFile = ConfigurationFile.Current;
             CategorizedSettingsElementCollection configSettings = configFile.Settings["systemSettings"];
 
-            if (configSettings["NodeID"] != null)
+            if (configSettings["NodeID"] is not null)
                 m_defaultNodeID = configSettings["NodeID"].Value;
 
             CommonFunctions.SetRetryServiceConnection(true);
@@ -122,7 +125,7 @@ namespace SIEGateManager
                             ComboboxNode.SelectedIndex = 0;
                     }
 
-                    if (ComboboxNode.SelectedItem != null)
+                    if (ComboboxNode.SelectedItem is not null)
                     {
                         KeyValuePair<Guid, string> currentNode = (KeyValuePair<Guid, string>)ComboboxNode.SelectedItem;
 
@@ -219,7 +222,7 @@ namespace SIEGateManager
         /// <param name="e">Event argument.</param>
         private void ComboboxNode_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if ((object)ComboboxNode.SelectedItem != null)
+            if (ComboboxNode.SelectedItem is not null)
                 ((App)Application.Current).NodeID = ((KeyValuePair<Guid, string>)ComboboxNode.SelectedItem).Key;
 
             m_menuDataItems[0].Command.Execute(null);
@@ -227,7 +230,7 @@ namespace SIEGateManager
 
         private void ConnectToService()
         {
-            if ((object)m_windowsServiceClient != null && (object)m_windowsServiceClient.Helper != null && (object)m_windowsServiceClient.Helper.RemotingClient != null)
+            if (m_windowsServiceClient?.Helper?.RemotingClient is not null)
             {
                 m_windowsServiceClient.Helper.RemotingClient.ConnectionEstablished -= RemotingClient_ConnectionEstablished;
                 m_windowsServiceClient.Helper.RemotingClient.ConnectionTerminated -= RemotingClient_ConnectionTerminated;
@@ -235,27 +238,27 @@ namespace SIEGateManager
 
             m_windowsServiceClient = CommonFunctions.GetWindowsServiceClient();
 
-            if ((object)m_windowsServiceClient != null)
-            {
-                m_windowsServiceClient.Helper.RemotingClient.ConnectionEstablished += RemotingClient_ConnectionEstablished;
-                m_windowsServiceClient.Helper.RemotingClient.ConnectionTerminated += RemotingClient_ConnectionTerminated;
+            if (m_windowsServiceClient is null)
+                return;
 
-                if (m_windowsServiceClient.Helper.RemotingClient.CurrentState == GSF.Communication.ClientState.Connected)
+            m_windowsServiceClient.Helper.RemotingClient.ConnectionEstablished += RemotingClient_ConnectionEstablished;
+            m_windowsServiceClient.Helper.RemotingClient.ConnectionTerminated += RemotingClient_ConnectionTerminated;
+
+            if (m_windowsServiceClient.Helper.RemotingClient.CurrentState == GSF.Communication.ClientState.Connected)
+            {
+                EllipseConnectionState.Dispatcher.BeginInvoke((Action)delegate()
                 {
-                    EllipseConnectionState.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        EllipseConnectionState.Fill = Application.Current.Resources["GreenRadialGradientBrush"] as RadialGradientBrush;
-                        ToolTipService.SetToolTip(EllipseConnectionState, "Connected to the service");
-                    });
-                }
-                else
+                    EllipseConnectionState.Fill = Application.Current.Resources["GreenRadialGradientBrush"] as RadialGradientBrush;
+                    ToolTipService.SetToolTip(EllipseConnectionState, "Connected to the service");
+                });
+            }
+            else
+            {
+                EllipseConnectionState.Dispatcher.BeginInvoke((Action)delegate()
                 {
-                    EllipseConnectionState.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        EllipseConnectionState.Fill = Application.Current.Resources["RedRadialGradientBrush"] as RadialGradientBrush;
-                        ToolTipService.SetToolTip(EllipseConnectionState, "Disconnected from the service");
-                    });
-                }
+                    EllipseConnectionState.Fill = Application.Current.Resources["RedRadialGradientBrush"] as RadialGradientBrush;
+                    ToolTipService.SetToolTip(EllipseConnectionState, "Disconnected from the service");
+                });
             }
         }
 
@@ -277,24 +280,19 @@ namespace SIEGateManager
             });
         }
 
-        private void ButtonBack_Click(object sender, RoutedEventArgs e)
-        {
+        private void ButtonBack_Click(object sender, RoutedEventArgs e) => 
             CommonFunctions.GoBack();
-        }
 
-        private void ButtonForward_Click(object sender, RoutedEventArgs e)
-        {
+        private void ButtonForward_Click(object sender, RoutedEventArgs e) => 
             CommonFunctions.GoForward();
-        }
 
-        private void ButtonLogo_Click(object sender, RoutedEventArgs e)
-        {
+        private void ButtonLogo_Click(object sender, RoutedEventArgs e) => 
             Process.Start("http://www.gridprotectionalliance.org/");
-        }
 
         private void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
             bool useLocalHelp = false;
+
             try
             {
                 // Check for the Internet Connectivity.
@@ -308,20 +306,19 @@ namespace SIEGateManager
                 useLocalHelp = true;
             }
 
-            if (useLocalHelp)
+            if (!useLocalHelp)
+                return;
+
+            try
             {
-                try
-                {
-                    // Launch the offline copy of the help page.
-                    Process.Start("SIEGateManagerHelp.mht");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to launch local help file." + Environment.NewLine + ex.Message, "SIEGate Manager Help", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                // Launch the offline copy of the help page.
+                Process.Start("SIEGateManagerHelp.mht");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to launch local help file." + Environment.NewLine + ex.Message, "SIEGate Manager Help", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
 
         #endregion
     }
