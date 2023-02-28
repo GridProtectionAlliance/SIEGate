@@ -36,7 +36,6 @@ using GSF.TimeSeries.UI.DataModels;
 using GSF.Configuration;
 using GSF.IO;
 using GSF.Reflection;
-using GSF.ErrorManagement;
 
 namespace SIEGateManager
 {
@@ -78,34 +77,38 @@ namespace SIEGateManager
             //                System.Diagnostics.Process.Start(hostService + ".exe");
             //#endif
 
-            InitializeComponent();
-
             App app = ((App)Application.Current);
+            LoadException = app.LoadException;
 
-            if (app.LoadException is not null)
-            {
-                app.ErrorLogger?.Log(app.LoadException, true);
-                return;
-            }
-
+            InitializeComponent();
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
             Title = app.Title;
             TextBoxTitle.Text = AssemblyInfo.EntryAssembly.Title;
 
-            CommonFunctions.CurrentPrincipal = SecurityPrincipal;
-            Title += " - " + SecurityPrincipal.Identity.Provider.UserData.LoginID;
+            if (LoadException is not null)
+                return;
 
-            ConfigurationFile configFile = ConfigurationFile.Current;
-            CategorizedSettingsElementCollection configSettings = configFile.Settings["systemSettings"];
+            try
+            {
+                CommonFunctions.CurrentPrincipal = SecurityPrincipal;
+                Title += " - " + SecurityPrincipal.Identity.Provider.UserData.LoginID;
 
-            if (configSettings["NodeID"] is not null)
-                m_defaultNodeID = configSettings["NodeID"].Value;
+                ConfigurationFile configFile = ConfigurationFile.Current;
+                CategorizedSettingsElementCollection configSettings = configFile.Settings["systemSettings"];
 
-            CommonFunctions.SetRetryServiceConnection(true);
-            CommonFunctions.ServiceConnectionRefreshed += CommonFunctions_ServiceConnectionRefreshed;
-            CommonFunctions.CanGoForwardChanged += (sender, args) => ForwardButton.IsEnabled = CommonFunctions.CanGoForward;
-            CommonFunctions.CanGoBackChanged += (sender, args) => BackButton.IsEnabled = CommonFunctions.CanGoBack;
+                if (configSettings["NodeID"] is not null)
+                    m_defaultNodeID = configSettings["NodeID"].Value;
+
+                CommonFunctions.SetRetryServiceConnection(true);
+                CommonFunctions.ServiceConnectionRefreshed += CommonFunctions_ServiceConnectionRefreshed;
+                CommonFunctions.CanGoForwardChanged += (sender, args) => ForwardButton.IsEnabled = CommonFunctions.CanGoForward;
+                CommonFunctions.CanGoBackChanged += (sender, args) => BackButton.IsEnabled = CommonFunctions.CanGoBack;
+            }
+            catch (Exception ex)
+            {
+                LoadException = ex;
+            }
         }
 
         #endregion
@@ -152,9 +155,17 @@ namespace SIEGateManager
         /// <param name="e">Event arguments.</param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            if (LoadException is not null)
+            {
+                WindowState = WindowState.Minimized;
+                App app = ((App)Application.Current);
+                app.ErrorLogger.Log(LoadException, true);
+                return;
+            }
+
             // Load Menu
-            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute("MenuDataItems");
-            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<MenuDataItem>), xmlRootAttribute);
+            XmlRootAttribute xmlRootAttribute = new("MenuDataItems");
+            XmlSerializer serializer = new(typeof(ObservableCollection<MenuDataItem>), xmlRootAttribute);
 
             using (XmlReader reader = XmlReader.Create(FilePath.GetAbsolutePath("Menu.xml")))
             {
