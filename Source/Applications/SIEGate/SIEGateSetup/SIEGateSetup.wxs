@@ -66,7 +66,7 @@
         <Feature Id="HistorianPlaybackUtilityFeature" Title="Historian Playback Utility" Description="The Historian Playback Utility is used to replay and export archived time-series data and/or statistics over a provided time range.">
           <ComponentGroupRef Id="HistorianPlaybackUtilityComponents" />
         </Feature>
-        <Feature Id="HistorianViewFeature" Title="Historian View Utility" Description="The Historian View Utility is used to trend archived openHistorian time-series data over a provided time range.">
+        <Feature Id="HistorianViewFeature" Title="Historian View Utility" Description="The Historian View Utility is used to trend archived time-series data over a provided time range.">
           <ComponentGroupRef Id="HistorianViewComponents" />
         </Feature>
         <Feature Id="LogFileViewerFeature" Title="Log File Viewer" Description="The Log File Viewer tool is used to examine and filter logged diagnostics data and perform detailed analysis and filtering of log information.">
@@ -91,8 +91,8 @@
         <ComponentGroupRef Id="GSFDependencyComponents" />
       </Feature>
 
-      <!-- openPDC Optional Features -->
-      <Feature Id="openPDCOptionalFeatures" Title="Optional Components" Description="Allows installation of optional openPDC components that are not required for common deployments." Level="2" >
+      <!-- SIEGate Optional Features -->
+      <Feature Id="SIEGateOptionalFeatures" Title="Optional Components" Description="Allows installation of optional SIEGate components that are not required for common deployments." Level="2" >
 	      <!-- eDNA Adapter Components -->
 	      <Feature Id="eDNAAdapterFeature" Title="eDNA Historian Adapter" Description="Installs the eDNA Historian time-series library output adapter and associated eDNA API dependencies">
 		      <ComponentGroupRef Id="eDNAAdapterComponents" />
@@ -454,7 +454,7 @@
         <File Id="ConfigurationEditor.exe" Name="ConfigurationEditor.exe" Source="$(var.ProjectDir)\ConfigurationEditor.exe">
           <netfx:NativeImage Id="ngen_ConfigurationEditor.exe" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
         </File>
-        <Shortcut Id="ConfigurationEditorStartMenuShortcut" Name="XML Configuration Editor" Icon="ConfigurationEditor.ico.exe" Description="Tool used edit the XML configuration file for the openPDC service and its components." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
+        <Shortcut Id="ConfigurationEditorStartMenuShortcut" Name="XML Configuration Editor" Icon="ConfigurationEditor.ico.exe" Description="Tool used edit the XML configuration file for the SIEGate service and its components." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
       </Component>
       <Component Id="ConfigurationEditorConfig">
         <File Id="ConfigurationEditor.exe.config" Name="ConfigurationEditor.exe.config" Source="$(var.ProjectDir)\ConfigurationEditor.exe.config" />
@@ -478,7 +478,7 @@
         <File Id="ConfigurationSetupUtility.exe" Name="$(var.ConfigurationSetupUtility.TargetFileName)" Source="$(var.ConfigurationSetupUtility.TargetPath)">
           <netfx:NativeImage Id="ngen_ConfigurationSetupUtility.exe" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
         </File>
-        <Shortcut Id="ConfigurationSetupUtilityStartMenuShortcut" Name="Configuration Setup Utility" Icon="ConfigurationSetupUtility.ico.exe" Description="Utility used to set up openPDC service configuration database." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
+        <Shortcut Id="ConfigurationSetupUtilityStartMenuShortcut" Name="Configuration Setup Utility" Icon="ConfigurationSetupUtility.ico.exe" Description="Utility used to set up SIEGate service configuration database." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
       </Component>
       <Component Id="ConfigurationSetupUtilityConfig">
         <File Id="ConfigurationSetupUtility.exe.config" Name="$(var.ConfigurationSetupUtility.TargetFileName).config" Source="$(var.ConfigurationSetupUtility.TargetPath).config" />
@@ -514,7 +514,7 @@
         <File Id="LogFileViewer.exe" Name="LogFileViewer.exe" Source="$(var.ProjectDir)\LogFileViewer.exe">
           <netfx:NativeImage Id="ngen_LogFileViewer.exe" Platform="64bit" Priority="1" AppBaseDirectory="INSTALLFOLDER"/>
         </File>
-        <Shortcut Id="LogFileViewerStartMenuShortcut" Name="Log File Viewer" Icon="LogFileViewer.ico.exe" Description="Tool used to analyze log files produced by the openPDC." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
+        <Shortcut Id="LogFileViewerStartMenuShortcut" Name="Log File Viewer" Icon="LogFileViewer.ico.exe" Description="Tool used to analyze log files produced by the SIEGate." WorkingDirectory="INSTALLFOLDER" Directory="ApplicationProgramsFolder" Advertise="yes" />
       </Component>
       <Component Id="LogFileViewerConfig">
         <File Id="LogFileViewer.exe.config" Name="LogFileViewer.exe.config" Source="$(var.ProjectDir)\LogFileViewer.exe.config" />
