@@ -98,7 +98,7 @@
       <Feature Id="openPDCOptionalFeatures" Title="Optional Components" Description="Allows installation of optional openPDC components that are not required for common deployments." Level="2" >
 	      <!-- eDNA Adapter Components -->
 	      <Feature Id="eDNAAdapterFeature" Title="eDNA Historian Adapter" Description="Installs the eDNA Historian time-series library output adapter and associated eDNA API dependencies">
-		      <ComponentGroupRef Id="eDNAAdapterComponents" />
+		      <ComponentGroupRef Id="eDNAComponents" />
 	      </Feature>
       </Feature>
 
@@ -283,9 +283,6 @@
             <RegistryValue Id="REG_GridProtectionAlliance.SIEGate.Revision" Name="Revision" Value="[ProductVersion]" Type="string" />
             <RegistryValue Id="REG_GridProtectionAlliance.SIEGate.TargetBitSize" Name="TargetBitSize" Value="64bit" Type="string" />
           </RegistryKey>
-        </RegistryKey>
-        <RegistryKey Id="REG_ServiceParams" Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\[SERVICENAME]" ForceCreateOnInstall="yes">
-          <RegistryValue Id="REG_ServiceParams.Start" Name="Start" Value="[SERVICESTART]" Type="string" />
         </RegistryKey>
         <RegistryKey Id="REG_ServiceParams" Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\[SERVICENAME]" ForceCreateOnInstall="yes">
           <RegistryValue Id="REG_ServiceParams.Start" Name="Start" Value="[SERVICESTART]" Type="string" />
