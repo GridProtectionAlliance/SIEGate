@@ -725,6 +725,11 @@
           <netfx:NativeImage Id="ngen_ExpressionEvaluator.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
         </File>
       </Component>
+      <Component Id="Newtonsoft.Json">
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.SolutionDir)\Dependencies\GSF\Newtonsoft.Json.dll">
+          <netfx:NativeImage Id="ngen_Newtonsoft.Json.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+        </File>
+      </Component>
       <Component Id="GSF.Communication">
         <File Id="GSF.Communication.dll" Name="GSF.Communication.dll" Source="$(var.SolutionDir)\Dependencies\GSF\GSF.Communication.dll">
           <netfx:NativeImage Id="ngen_GSF.Communication.dll" Platform="64bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
