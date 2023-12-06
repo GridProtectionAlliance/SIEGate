@@ -239,7 +239,7 @@ namespace SIEGateManager
                 database?.Dispose();
             }
 
-            bool mirrorMode = true;
+            bool mirrorMode = false;
 
             try
             {
