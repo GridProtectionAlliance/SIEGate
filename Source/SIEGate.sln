@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A594B55D-0C88-4F66-AF6E-86266F933DF0}"
 EndProject
@@ -158,13 +158,6 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SIEGateSetup", "Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIEGateManager", "Applications\SIEGateManager\SIEGateManager.csproj", "{CCF1DF65-C4DA-41CE-9332-0293D33934C5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiX", "WiX", "{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26}"
-	ProjectSection(SolutionItems) = preProject
-		Dependencies\WiX\WixNetFxExtension.dll = Dependencies\WiX\WixNetFxExtension.dll
-		Dependencies\WiX\WixUIExtension.dll = Dependencies\WiX\WixUIExtension.dll
-		Dependencies\WiX\WixUtilExtension.dll = Dependencies\WiX\WixUtilExtension.dll
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostgreSQL", "PostgreSQL", "{20C5EFE4-6DFC-4692-B8CA-7D0EF8070CA9}"
 	ProjectSection(SolutionItems) = preProject
 		Data\PostgreSQL\InitialDataSet.sql = Data\PostgreSQL\InitialDataSet.sql
@@ -243,7 +236,6 @@ Global
 		{018FDA38-8662-4733-A3C8-22EC24A0CE85} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{59671700-02F8-4B9D-B1F7-0CCE4599177E} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
 		{CCF1DF65-C4DA-41CE-9332-0293D33934C5} = {A594B55D-0C88-4F66-AF6E-86266F933DF0}
-		{E9C94F23-DA42-4006-A83C-F1ABA3F3AB26} = {F1E4A6D5-E5A1-48EC-B2E7-C20AADCF94E1}
 		{20C5EFE4-6DFC-4692-B8CA-7D0EF8070CA9} = {300F8C7D-35CC-4CFA-A97A-82824E4E59BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
