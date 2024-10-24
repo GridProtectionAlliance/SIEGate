@@ -151,6 +151,7 @@
     <Property Id="INSTALLOPTIONALFEATURE" Secure="yes" />
 
     <Property Id="SERVICENAME" Value="$(var.SIEGate.TargetName)" />
+    <Property Id="SERVICEACCOUNT" Secure="yes" />
     <Property Id="SERVICEPASSWORD" Hidden="yes" />
     <Property Id="HTTPSERVICEPORTS" Value="6053,6054,6153,6154,6354,6454,5019" />
     <Property Id="COMPANYNAME" Value="Grid Protection Alliance" />
