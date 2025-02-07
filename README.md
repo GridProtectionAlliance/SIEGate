@@ -12,7 +12,7 @@ Funded by the U.S. Department of Energy, the project team includes the Grid Prot
 
 As shown below, SIEGate provides a security isolation layer between critical internal infrastructure and external systems to protect reliability and market sensitive data. SIEGate reduces the cost of data exchange through ease-of-configuration.
 
-![SIEGate](https://www.gridprotectionalliance.org/docs/products/siegate/SIEGateUseCase.png)
+![SIEGate](https://github.com/GridProtectionAlliance/SIEGate/blob/master/Source/Documentation/wiki/images/SIEGateUseCase.png)
 
 SIEGate implements a true publish-subscribe architecture where the sending gateway owner authorizes data as available for subscription by specific consuming gateways. Once authorized, the consuming gateway automatically discovers the data that have been made available to it by other SIEGate nodes and allows the selective subscription to them. SIEGate data available for publication and subscription includes measurements, such as SCADA or synchrophasor data; files, such as SDX files; and higher-level notifications or alarms that are of significance for overall grid operation. These alarms may be configured to promulgate to all interconnected SIEGate nodes so that global alarms can be raised.
 
