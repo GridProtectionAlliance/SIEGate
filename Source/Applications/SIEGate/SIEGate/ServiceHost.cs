@@ -21,9 +21,11 @@
 //
 //******************************************************************************************************
 
+using System;
 using GSF.TimeSeries;
 using GSF;
 using GSF.Configuration;
+using GSF.Diagnostics;
 
 namespace SIEGate
 {
@@ -39,11 +41,23 @@ namespace SIEGate
             // Handle base class service starting procedures
             base.ServiceStartingHandler(sender, e);
 
-            // Make sure SIEGate specific default service settings exist
-            CategorizedSettingsElementCollection systemSettings = ConfigurationFile.Current.Settings["systemSettings"];
+            try
+            {
+                // Make sure SIEGate specific default service settings exist
+                CategorizedSettingsElementCollection systemSettings = ConfigurationFile.Current.Settings["systemSettings"];
 
-            systemSettings.Add("CompanyName", "Grid Protection Alliance", "The name of the company who owns this instance of the SIEGate.");
-            systemSettings.Add("CompanyAcronym", "GPA", "The acronym representing the company who owns this instance of the SIEGate.");
+                systemSettings.Add("CompanyName", "Grid Protection Alliance", "The name of the company who owns this instance of the SIEGate.");
+                systemSettings.Add("CompanyAcronym", "GPA", "The acronym representing the company who owns this instance of the SIEGate.");
+                systemSettings.Add("DefaultCalculationLagTime", 5.0, "Defines the default lag-time value, in seconds, for template calculations");
+                systemSettings.Add("DefaultCalculationLeadTime", 5.0, "Defines the default lead-time value, in seconds, for template calculations");
+                systemSettings.Add("DefaultCalculationFramesPerSecond", 30, "Defines the default frames-per-second value for template calculations");
+
+                ConfigurationFile.Current.Save();
+            }
+            catch (Exception ex)
+            {
+                Logger.SwallowException(new InvalidOperationException($"{nameof(ServiceStartingHandler)} failed while adding default settings: {ex.Message}", ex));
+            }
         }
     }
 }
