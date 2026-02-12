@@ -1,5 +1,5 @@
-![Icon](http://www.gridprotectionalliance.org/images/products/icons%2064/SIEGate.png)![SIEGate](http://www.gridprotectionalliance.org/images/products/SIEGate.png)
-# SIEGate
+![SIEGate](http://www.gridprotectionalliance.org/images/products/SIEGate.png)
+
 Secure Information Exchange Gateway
 
 ![CodeQL](https://github.com/GridProtectionAlliance/SIEGate/workflows/CodeQL/badge.svg)
